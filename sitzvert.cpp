@@ -376,12 +376,15 @@ int Bundestag::calcNumValidParties()
     {
         int scndVotes = 0;
         int wonDMs    = 0;
+        bool fulfillNaturalThr = false;
         for (int s = 0; s < NUM_STATES; s++)
         {
+            fulfillNaturalThr |= (dataarray[s].second_votes.at(p) * dataarray[s].seats_in_bundestag >= dataarray[s].valid_votes[1]);
             scndVotes += dataarray[s].second_votes.at(p);
             wonDMs    += dataarray[s].direct_mandates.at(p);
         }
-        if (((double)scndVotes / (double)validVotes < electoralThr) && (wonDMs < minNeededDM))
+        bool fulfillThr = ((double)scndVotes / (double)validVotes >= electoralThr) || (wonDMs >= minNeededDM);
+        if (!fulfillThr || !fulfillNaturalThr)
         {
             for (int s = 0; s < NUM_STATES; s++)
             {
