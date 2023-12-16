@@ -70,7 +70,6 @@ class SainteLague
     SainteLague(): dist(nullptr), offset(1), partyN(0), sumVotes(0), sumSeats(0) {}
     void init(int* distribution, int ptr_offset, int parties, int seats);
     void init(int* distribution, int parties, int seats);
-    double getDivisor();
     void getSeatDist(int* results, int ptr_offset = 1);
 };
 
@@ -92,10 +91,10 @@ void SainteLague::init(int* distribution, int ptr_offset, int parties, int seats
     }
 }
 
-double SainteLague::getDivisor()
+void SainteLague::getSeatDist(int* results, int ptr_offset)
 {
-    const double div0 = (double)sumVotes / (double)sumSeats;
-    vector<double> divtable;
+    const double div0 = (double)sumVotes / (double)std::max(sumSeats, partyN);
+    vector<std::pair<int, double>> divtable;
     double divisor = 0;
 
     for (int party = 0; party < partyN; party++)
@@ -103,25 +102,22 @@ double SainteLague::getDivisor()
         divisor = 0.5;
         do
         {
-            divtable.push_back(*(dist + offset * party) / divisor);
+            divtable.push_back(make_pair(party, *(dist + offset * party) / divisor));
             divisor += 1.0;
-        } while (divtable.back() >= div0);
+        } while (divtable.back().second >= div0);
     }
-    std::sort(divtable.begin(), divtable.end(), std::greater<double>());
+    assert(divtable.size() >= sumSeats);
 
-    return 0.5 * (divtable.at(sumSeats - 1) + divtable.at(sumSeats));
-}
+    std::sort(divtable.begin(), divtable.end(), [](const pair<int,double> &a, const pair<int,double> &b) {return a.second > b.second;});
 
-void SainteLague::getSeatDist(int* results, int ptr_offset)
-{
-    const double div = getDivisor();
-    int sum          = 0;
     for (int party = 0; party < partyN; party++)
     {
-        *(results + party * ptr_offset) = (int)round((double)*(dist + offset * party) / div);
-        sum += *(results + party * ptr_offset);
+        *(results + party * ptr_offset) = 0;
+        for (int idx = 0; idx < sumSeats; idx++)
+        {
+            *(results + party * ptr_offset) += (divtable[idx].first == party);
+        }
     }
-    assert(sum == sumSeats);
 }
 
 struct StateData
