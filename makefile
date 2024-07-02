@@ -12,15 +12,12 @@ all: $(TARGET)
 debug: CFLAGS += -g -Wall
 debug: $(TARGET)
 
-lib.o: lib.cpp
-lib.cpp: lib.h
-main.o: main.cpp
-
 %.o: %.cpp
 	$(CC) $(CFLAGS) $< -o $@
 
 $(TARGET): $(OBJS)
 	$(CC) $(LFLAGS) $^ -o $@
+#	save results to text file
 	./$(TARGET) > results.txt
 
 clean:
