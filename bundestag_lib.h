@@ -73,6 +73,7 @@ private:
     int* initialSeatsInStates[NUM_STATES];
     int* surplusMandates;
     int* finalSeats;
+    int** finalSeatsPerState;
     int* compensationMandates;
     int totalNumberSeats;
     int validVotes; //total number votes
@@ -81,10 +82,17 @@ private:
     int calcFinalParliamentSize();
     int calcNumValidParties();
     void determineParliament();
+    void calcFinalPartySeatsByState();
 public:
     Bundestag(std::array<StateData, NUM_STATES>& dataFromStates, bool useReform2020, double electoralThreshold, int minNeededDirectMandates);
     ~Bundestag();
-    void printApportionment();
-    void printStateSummaryForParty(int party);
-    int const getNumOfParties() {return numParties;}
+    int const getDirectMandForState(int state, int party) const {return dataarray[state].direct_mandates[party];}
+    int const getNumOfParties() const {return numParties;}
+    int const getTotalNumberOfSeats() const {return totalNumberSeats;}
+    int const getValidVotes() const {return validVotes;}
+    int const getScndVotesForParty(int party) const {return secondVotes[party];}
+    int const getSeatAllocation(int party) const {return finalSeats[party];}
+    int const getSeatAllocation(int party, int state) const {return finalSeatsPerState[party][state];}
+    int const getCompMandForParty(int party) const {return compensationMandates[party];}
+    int const getSurplusMandForParty(int party) const {return surplusMandates[party];}
 };

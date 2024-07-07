@@ -77,12 +77,18 @@ Bundestag::Bundestag(array<StateData, NUM_STATES>& dataFromStates, bool useRefor
     surplusMandates      = (int*)malloc( numParties * sizeof(int) );
     finalSeats           = (int*)malloc( numParties * sizeof(int) );
     compensationMandates = (int*)malloc( numParties * sizeof(int) );
+    finalSeatsPerState   = (int**)malloc( numParties * sizeof(int*) );
     for (int s = 0; s < NUM_STATES; s++)
     {
         initialSeatsInStates[s] = (int*)malloc( numParties * sizeof(int) );
     }
+    for (int p = 0; p < numParties; p++)
+    {
+        finalSeatsPerState[p]   = (int*)malloc( NUM_STATES * sizeof(int) );
+    }
 
-    determineParliament();
+    this->determineParliament();
+    this->calcFinalPartySeatsByState();
 }
 
 Bundestag::~Bundestag()
@@ -95,6 +101,11 @@ Bundestag::~Bundestag()
     {
         free(initialSeatsInStates[s]);
     }
+    for (int p = 0; p < numParties; p++)
+    {
+        free(finalSeatsPerState[p]);
+    }
+    free(finalSeatsPerState);
 }
 
 void Bundestag::evalSurplusMandates()
@@ -225,55 +236,31 @@ void Bundestag::determineParliament()
     }
 }
 
-void Bundestag::printApportionment()
+void Bundestag::calcFinalPartySeatsByState()
 {
-    //print summary
-    cout << std::left;
-    for (int p = 0; p < numParties; p++)
+    for (int party = 0; party < this->getNumOfParties(); party++)
     {
-        cout << "Seats for " << std::setw(8) << StateData::party_names.at(p) << ": " << std::setw(3) << finalSeats[p] << "  (ÜM "
-          << std::setw(2) << surplusMandates[p] << ", AM " << std::setw(2) << compensationMandates[p] << ")   ("
-          << std::fixed << std::setprecision(2) << (100.0 * secondVotes[p] / validVotes) << "% votes, "
-          << std::fixed << std::setprecision(2) << (100.0 * finalSeats[p] / totalNumberSeats) << "% seats)" << endl;
-    }
-    cout << "-------------------------" << endl;
-    cout << "Total seats: " << totalNumberSeats << endl;
-    cout << "-------------------------" << endl;
-}
-
-void Bundestag::printStateSummaryForParty(int party)
-{
-    assert( (party >=0) && (party < numParties) );
-    
-    int seatsPerState[NUM_STATES];
-    int votesPerState[NUM_STATES];
-    int reduceSeats = 0;
-    int actualFinalSeats;
-    for (int s = 0; s < NUM_STATES; s++)
-    {
-        votesPerState[s] = dataarray[s].second_votes[party];
-    }
-    do
-    {
-        //sl.init with the array of votes that contains the votes for one <party> in each state
-        sl.init(votesPerState, NUM_STATES, finalSeats[party] - reduceSeats);
-        sl.getSeatDist(seatsPerState);
-
-        actualFinalSeats = 0;
+        int* seatsPerState = finalSeatsPerState[party];
+        int votesPerState[NUM_STATES];
+        int reduceSeats = 0;
+        int actualFinalSeats;
         for (int s = 0; s < NUM_STATES; s++)
         {
-            seatsPerState[s] = std::max(seatsPerState[s], dataarray[s].direct_mandates[party]);
-            actualFinalSeats += seatsPerState[s];
+            votesPerState[s] = dataarray[s].second_votes[party];
         }
-        reduceSeats += 1;
-    } while ( actualFinalSeats != finalSeats[party] );
-    
-    //print results
-    cout << StateData::party_names.at(party) << " - Seats per State" << endl;
-    cout << "-------------------------" << endl;
-    for (int s = 0; s < NUM_STATES; s++)
-    {
-        cout << std::setw(22) << stateMap.at(s) << " : " << seatsPerState[s] << "  (DM " << dataarray[s].direct_mandates[party] << ")" << endl;
+        do
+        {
+            //sl.init with the array of votes that contains the votes for one <party> in each state
+            sl.init(votesPerState, NUM_STATES, finalSeats[party] - reduceSeats);
+            sl.getSeatDist(seatsPerState);
+
+            actualFinalSeats = 0;
+            for (int s = 0; s < NUM_STATES; s++)
+            {
+                seatsPerState[s] = std::max(seatsPerState[s], dataarray[s].direct_mandates[party]);
+                actualFinalSeats += seatsPerState[s];
+            }
+            reduceSeats += 1;
+        } while ( actualFinalSeats != finalSeats[party] );
     }
-    cout << "-------------------------" << endl;
 }
