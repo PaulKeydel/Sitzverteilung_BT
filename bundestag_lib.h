@@ -40,12 +40,10 @@ private:
     int offset;
     int partyN;
     int sumVotes;
-    int sumSeats;
 public:
-    SainteLague(): dist(nullptr), offset(1), partyN(0), sumVotes(0), sumSeats(0) {}
-    void init(int* distribution, int ptr_offset, int parties, int seats);
-    void init(int* distribution, int parties, int seats);
-    void getSeatDist(int* results, int ptr_offset = 1);
+    SainteLague(): dist(nullptr), offset(1), partyN(0), sumVotes(0) {}
+    void init(int totalNumParties, int* distribution, int ptr_offset = 1);
+    void getSeatDist(int totalSeats, int* results, int ptr_offset = 1);
 };
 
 struct StateData
@@ -61,38 +59,43 @@ struct StateData
     std::vector<int> direct_mandates;
 };
 
+struct ParlGroupData
+{
+    int surplusMandates = 0;
+    int finalSeats = 0;
+    int finalSeatsPerState[NUM_STATES] = {0};
+    int compensationMandates = 0;
+};
+
 class Bundestag
 {
 private:
     SainteLague sl;
     std::array<StateData, NUM_STATES>& dataarray;
+    std::vector<ParlGroupData> datapg;
     bool bUseReform2020;
+    int i1reform2024_2reform2020_3before;
     double electoralThr;
     int minNeededDM;
     int* secondVotes;
     int* initialSeatsInStates[NUM_STATES];
-    int* surplusMandates;
-    int* finalSeats;
-    int** finalSeatsPerState;
-    int* compensationMandates;
     int totalNumberSeats;
     int validVotes; //total number votes
     int numParties;
     void evalSurplusMandates();
     int calcFinalParliamentSize();
     int calcNumValidParties();
-    void determineParliament();
     void calcFinalPartySeatsByState();
 public:
-    Bundestag(std::array<StateData, NUM_STATES>& dataFromStates, bool useReform2020, double electoralThreshold, int minNeededDirectMandates);
+    Bundestag(std::array<StateData, NUM_STATES>& dataFromStates, int i1reform2024_2reform2020_3before, double electoralThreshold, int minNeededDirectMandates);
     ~Bundestag();
+    const ParlGroupData& Fraktion(int party) const {return datapg.at(party);}
+    ParlGroupData& Fraktion(int party) {return datapg.at(party);}
+    void summaryPrint0();
+    void summaryPrint1();
     int const getDirectMandForState(int state, int party) const {return dataarray[state].direct_mandates[party];}
     int const getNumOfParties() const {return numParties;}
     int const getTotalNumberOfSeats() const {return totalNumberSeats;}
     int const getValidVotes() const {return validVotes;}
     int const getScndVotesForParty(int party) const {return secondVotes[party];}
-    int const getSeatAllocation(int party) const {return finalSeats[party];}
-    int const getSeatAllocation(int party, int state) const {return finalSeatsPerState[party][state];}
-    int const getCompMandForParty(int party) const {return compensationMandates[party];}
-    int const getSurplusMandForParty(int party) const {return surplusMandates[party];}
 };

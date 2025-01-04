@@ -22,27 +22,21 @@ std::map<int, std::string> stateMap =
 vector<std::string> StateData::party_names = {};
 
 
-void SainteLague::init(int* distribution, int parties, int seats)
+void SainteLague::init(int totalNumParties, int* distribution, int ptr_offset)
 {
-    this->init(distribution, 1, parties, seats);
-}
-
-void SainteLague::init(int* distribution, int ptr_offset, int parties, int seats)
-{
-    partyN   = parties;
+    partyN   = totalNumParties;
     dist     = distribution;
     offset   = ptr_offset;
-    sumSeats = seats;
     sumVotes = 0;
-    for (int i = 0; i < parties; i++)
+    for (int i = 0; i < totalNumParties; i++)
     {
         sumVotes += *(distribution + i * ptr_offset);
     }
 }
 
-void SainteLague::getSeatDist(int* results, int ptr_offset)
+void SainteLague::getSeatDist(int totalSeats, int* results, int ptr_offset)
 {
-    const double div0 = (double)sumVotes / (double)std::max(sumSeats, partyN);
+    const double div0 = (double)sumVotes / (double)std::max(totalSeats, partyN);
     vector<std::pair<int, double>> divtable;
     double divisor = 0;
 
@@ -55,14 +49,14 @@ void SainteLague::getSeatDist(int* results, int ptr_offset)
             divisor += 1.0;
         } while (divtable.back().second >= div0);
     }
-    assert(divtable.size() >= sumSeats);
+    assert(divtable.size() >= totalSeats);
 
     std::sort(divtable.begin(), divtable.end(), [](const pair<int,double> &a, const pair<int,double> &b) {return a.second > b.second;});
 
     for (int party = 0; party < partyN; party++)
     {
         *(results + party * ptr_offset) = 0;
-        for (int idx = 0; idx < sumSeats; idx++)
+        for (int idx = 0; idx < totalSeats; idx++)
         {
             *(results + party * ptr_offset) += (divtable[idx].first == party);
         }
@@ -70,68 +64,100 @@ void SainteLague::getSeatDist(int* results, int ptr_offset)
 }
 
 
-Bundestag::Bundestag(array<StateData, NUM_STATES>& dataFromStates, bool useReform2020, double electoralThreshold, int minNeededDirectMandates) : dataarray(dataFromStates), bUseReform2020(useReform2020), electoralThr(electoralThreshold), minNeededDM(minNeededDirectMandates)
+Bundestag::Bundestag(array<StateData, NUM_STATES>& dataFromStates, int i1reform2024_2reform2020_3before, double electoralThreshold, int minNeededDirectMandates) : dataarray(dataFromStates), i1reform2024_2reform2020_3before(i1reform2024_2reform2020_3before), electoralThr(electoralThreshold), minNeededDM(minNeededDirectMandates)
 {
-    numParties           = calcNumValidParties();
-    secondVotes          = (int*)malloc( numParties * sizeof(int) );
-    surplusMandates      = (int*)malloc( numParties * sizeof(int) );
-    finalSeats           = (int*)malloc( numParties * sizeof(int) );
-    compensationMandates = (int*)malloc( numParties * sizeof(int) );
-    finalSeatsPerState   = (int**)malloc( numParties * sizeof(int*) );
+    numParties  = calcNumValidParties();
+    secondVotes = (int*)malloc( numParties * sizeof(int) );
     for (int s = 0; s < NUM_STATES; s++)
     {
         initialSeatsInStates[s] = (int*)malloc( numParties * sizeof(int) );
     }
     for (int p = 0; p < numParties; p++)
     {
-        finalSeatsPerState[p]   = (int*)malloc( NUM_STATES * sizeof(int) );
+        datapg.push_back(ParlGroupData());
     }
 
-    this->determineParliament();
-    this->calcFinalPartySeatsByState();
+    //sum second votes for each party over all federal states
+    for (int p = 0; p < numParties; p++)
+    {
+        secondVotes[p] = 0;
+        for (int s = 0; s < NUM_STATES; s++)
+        {
+            secondVotes[p] += dataarray[s].second_votes[p];
+        }
+    }
+    //do the calculations depending on the chosen Wahlrechtsreform
+    if (i1reform2024_2reform2020_3before == 1)
+    {
+        totalNumberSeats = 630;
+        int votesPerState[NUM_STATES];
+        //Oberverteilung nach https://www.bundeswahlleiterin.de/dam/jcr/05f98632-634d-4582-8507-ab3267d66c01/bwg2025_sitzberechnung_erg2021.pdf
+        sl.init(numParties, secondVotes);
+        sl.getSeatDist(totalNumberSeats, &Fraktion(0).finalSeats, sizeof(ParlGroupData) / sizeof(int));
+        //Unterverteilung
+        for (int party = 0; party < numParties; party++)
+        {
+            for (int s = 0; s < NUM_STATES; s++)
+            {
+                votesPerState[s] = dataarray[s].second_votes[party];
+            }
+            sl.init(NUM_STATES, votesPerState);
+            sl.getSeatDist(Fraktion(party).finalSeats, Fraktion(party).finalSeatsPerState);
+        }
+    }
+    else
+    {
+        bUseReform2020 = (i1reform2024_2reform2020_3before == 2);
+        //calc party specific seat allocation in a state <s>
+        for (int s = 0; s < NUM_STATES; s++)
+        {
+            sl.init(numParties, dataarray[s].second_votes.data());
+            sl.getSeatDist(dataarray[s].seats_in_bundestag, initialSeatsInStates[s]);
+        }
+
+        //calc number of surplus mandates
+        evalSurplusMandates();
+
+        //calc total number of seats depending on surplus mandates
+        totalNumberSeats = calcFinalParliamentSize();
+
+        calcFinalPartySeatsByState();
+    }
 }
 
 Bundestag::~Bundestag()
 {
     free(secondVotes);
-    free(surplusMandates);
-    free(finalSeats);
-    free(compensationMandates);
     for (int s = 0; s < NUM_STATES; s++)
     {
         free(initialSeatsInStates[s]);
     }
-    for (int p = 0; p < numParties; p++)
-    {
-        free(finalSeatsPerState[p]);
-    }
-    free(finalSeatsPerState);
 }
 
 void Bundestag::evalSurplusMandates()
 {
     for (int p = 0; p < numParties; p++)
     {
-        surplusMandates[p] = 0;
+        Fraktion(p).surplusMandates = 0;
         for (int s = 0; s < NUM_STATES; s++)
         {
             int dm = dataarray[s].direct_mandates[p];
             if (bUseReform2020)
             {
                 int diff = std::max(dm, (int)ceil(0.5 * (dm + initialSeatsInStates[s][p]))) - initialSeatsInStates[s][p];
-                surplusMandates[p] += diff;
+                Fraktion(p).surplusMandates += diff;
             }
             else
             {
                 int diff = std::max(dm, initialSeatsInStates[s][p]) - initialSeatsInStates[s][p];
-                surplusMandates[p] += diff;
+                Fraktion(p).surplusMandates += diff;
             }
         }
         if (bUseReform2020)
         {
-            if (surplusMandates[p] < 0) surplusMandates[p] = 0;
+            if (Fraktion(p).surplusMandates < 0) Fraktion(p).surplusMandates = 0;
         }
-        assert( surplusMandates[p] >= 0 );
+        assert( Fraktion(p).surplusMandates >= 0 );
     }
 }
 
@@ -141,25 +167,37 @@ int Bundestag::calcFinalParliamentSize()
     std::vector<double> divList;
     for (int p = 0; p < numParties; p++)
     {
-        finalSeats[p] = bUseReform2020 ? std::max(0, (surplusMandates[p] - 3)) : surplusMandates[p];
+        Fraktion(p).finalSeats = bUseReform2020 ? std::max(0, (Fraktion(p).surplusMandates - 3)) : Fraktion(p).surplusMandates;
         for (int s = 0; s < NUM_STATES; s++)
         {
-            finalSeats[p] += initialSeatsInStates[s][p];
+            Fraktion(p).finalSeats += initialSeatsInStates[s][p];
         }
-        divList.push_back( (double)secondVotes[p] / ((double)finalSeats[p] - 0.5) );
+        divList.push_back( (double)secondVotes[p] / ((double)Fraktion(p).finalSeats - 0.5) );
     }
     const double d = *std::min_element(divList.begin(), divList.end());
+    for (int p = 0; p < numParties; p++)
+    {
+        total_seats += (int)round((double)secondVotes[p] / d);
+    }
     divList.clear();
+
+    sl.init(numParties, secondVotes);
+    sl.getSeatDist(total_seats, &Fraktion(0).finalSeats, sizeof(ParlGroupData) / sizeof(int));
 
     for (int p = 0; p < numParties; p++)
     {
-        finalSeats[p] = (int)round((double)secondVotes[p] / d);
         if (bUseReform2020)
         {
-            finalSeats[p] += (surplusMandates[p] - std::max(0, (surplusMandates[p] - 3)));
+            int iadd = (Fraktion(p).surplusMandates - std::max(0, (Fraktion(p).surplusMandates - 3)));
+            Fraktion(p).finalSeats += iadd;
+            total_seats += iadd;
         }
 
-        total_seats += finalSeats[p];
+        Fraktion(p).compensationMandates = Fraktion(p).finalSeats - Fraktion(p).surplusMandates;
+        for (int s = 0; s < NUM_STATES; s++)
+        {
+            Fraktion(p).compensationMandates -= initialSeatsInStates[s][p];
+        }
     }
     return total_seats;
 }
@@ -203,44 +241,10 @@ int Bundestag::calcNumValidParties()
     return dataarray[0].second_votes.size();
 }
 
-void Bundestag::determineParliament()
-{
-    //sum second votes
-    for (int p = 0; p < numParties; p++)
-    {
-        secondVotes[p] = 0;
-        for (int s = 0; s < NUM_STATES; s++)
-        {
-            secondVotes[p] += dataarray[s].second_votes[p];
-        }
-    }
-    for (int s = 0; s < NUM_STATES; s++)
-    {
-        sl.init(dataarray[s].second_votes.data(), numParties, dataarray[s].seats_in_bundestag);
-        sl.getSeatDist(initialSeatsInStates[s]);
-    }
-
-    //calc number of surplus mandates
-    evalSurplusMandates();
-
-    //calc total number of seats depending on surplus mandates
-    totalNumberSeats = calcFinalParliamentSize();
-
-    for (int p = 0; p < numParties; p++)
-    {
-        compensationMandates[p] = finalSeats[p] - surplusMandates[p];
-        for (int s = 0; s < NUM_STATES; s++)
-        {
-            compensationMandates[p] -= initialSeatsInStates[s][p];
-        }
-    }
-}
-
 void Bundestag::calcFinalPartySeatsByState()
 {
     for (int party = 0; party < this->getNumOfParties(); party++)
     {
-        int* seatsPerState = finalSeatsPerState[party];
         int votesPerState[NUM_STATES];
         int reduceSeats = 0;
         int actualFinalSeats;
@@ -248,19 +252,48 @@ void Bundestag::calcFinalPartySeatsByState()
         {
             votesPerState[s] = dataarray[s].second_votes[party];
         }
+
+        sl.init(NUM_STATES, votesPerState);
         do
         {
-            //sl.init with the array of votes that contains the votes for one <party> in each state
-            sl.init(votesPerState, NUM_STATES, finalSeats[party] - reduceSeats);
-            sl.getSeatDist(seatsPerState);
+            sl.getSeatDist(Fraktion(party).finalSeats - reduceSeats, Fraktion(party).finalSeatsPerState);
 
             actualFinalSeats = 0;
             for (int s = 0; s < NUM_STATES; s++)
             {
-                seatsPerState[s] = std::max(seatsPerState[s], dataarray[s].direct_mandates[party]);
-                actualFinalSeats += seatsPerState[s];
+                Fraktion(party).finalSeatsPerState[s] = std::max(Fraktion(party).finalSeatsPerState[s], dataarray[s].direct_mandates[party]);
+                actualFinalSeats += Fraktion(party).finalSeatsPerState[s];
             }
             reduceSeats += 1;
-        } while ( actualFinalSeats != finalSeats[party] );
+        } while ( actualFinalSeats != Fraktion(party).finalSeats );
+    }
+}
+
+void Bundestag::summaryPrint0()
+{
+    cout << std::left;
+    for (int p = 0; p < getNumOfParties(); p++)
+    {
+        cout << "Seats for " << std::setw(8) << StateData::party_names.at(p) << ": " << std::setw(3) << Fraktion(p).finalSeats << "  (ÜM "
+          << std::setw(2) << Fraktion(p).surplusMandates << ", AM " << std::setw(2) << Fraktion(p).compensationMandates << ")   ("
+          << std::fixed << std::setprecision(2) << (100.0 * getScndVotesForParty(p) / getValidVotes()) << "% votes, "
+          << std::fixed << std::setprecision(2) << (100.0 * Fraktion(p).finalSeats / getTotalNumberOfSeats()) << "% seats)" << endl;
+    }
+    cout << "-------------------------" << endl;
+    cout << "Total seats: " << getTotalNumberOfSeats() << endl;
+    cout << "-------------------------" << endl;
+}
+
+void Bundestag::summaryPrint1()
+{
+    for (int party = 0; party < getNumOfParties(); party++)
+    {
+        cout << StateData::party_names.at(party) << " - Seats per State" << endl;
+        cout << "-------------------------" << endl;
+        for (int s = 0; s < NUM_STATES; s++)
+        {
+            cout << std::setw(22) << stateMap.at(s) << " : " << Fraktion(party).finalSeatsPerState[s] << "  (DM " << getDirectMandForState(s, party) << ")" << endl;
+        }
+        cout << "-------------------------" << endl;
     }
 }

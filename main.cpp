@@ -117,35 +117,6 @@ void collectDataFromFile(const string& path, array<StateData, NUM_STATES>& dataa
     assert( sum_direct_mandates == NUM_CONSTITUENCIES );
 }
 
-void summaryPrint0(const Bundestag& cBT)
-{
-    cout << std::left;
-    for (int p = 0; p < cBT.getNumOfParties(); p++)
-    {
-        cout << "Seats for " << std::setw(8) << StateData::party_names.at(p) << ": " << std::setw(3) << cBT.getSeatAllocation(p) << "  (ÜM "
-          << std::setw(2) << cBT.getSurplusMandForParty(p) << ", AM " << std::setw(2) << cBT.getCompMandForParty(p) << ")   ("
-          << std::fixed << std::setprecision(2) << (100.0 * cBT.getScndVotesForParty(p) / cBT.getValidVotes()) << "% votes, "
-          << std::fixed << std::setprecision(2) << (100.0 * cBT.getSeatAllocation(p) / cBT.getTotalNumberOfSeats()) << "% seats)" << endl;
-    }
-    cout << "-------------------------" << endl;
-    cout << "Total seats: " << cBT.getTotalNumberOfSeats() << endl;
-    cout << "-------------------------" << endl;
-}
-
-void summaryPrint1(const Bundestag& cBT)
-{
-    for (int party = 0; party < cBT.getNumOfParties(); party++)
-    {
-        cout << StateData::party_names.at(party) << " - Seats per State" << endl;
-        cout << "-------------------------" << endl;
-        for (int s = 0; s < NUM_STATES; s++)
-        {
-            cout << std::setw(22) << stateMap.at(s) << " : " << cBT.getSeatAllocation(party, s) << "  (DM " << cBT.getDirectMandForState(s, party) << ")" << endl;
-        }
-        cout << "-------------------------" << endl;
-    }
-}
-
 
 int main(int argc, char *argv[])
 {
@@ -176,15 +147,15 @@ int main(int argc, char *argv[])
     stData[BW].seats_in_bundestag = 77;
     stData[SL].seats_in_bundestag = 7;
 
-    const bool bReform2020 = argc > 2 ? (bool)atoi(argv[2]) : true;
+    const int iReformMode = argc > 2 ? atoi(argv[2]) : 2;
     const double dElectThr = argc > 3 ? atof(argv[3]) : 0.05;
     const int iMinNeededDM = argc > 4 ? atoi(argv[4]) : 3;
-    Bundestag bt(stData, bReform2020, dElectThr, iMinNeededDM);
+    Bundestag bt(stData, iReformMode, dElectThr, iMinNeededDM);
 
     //print all parties in parliament
-    summaryPrint0(bt);
+    bt.summaryPrint0();
     //print state summary for each party
-    summaryPrint1(bt);
+    bt.summaryPrint1();
 
     return 0;
 }
