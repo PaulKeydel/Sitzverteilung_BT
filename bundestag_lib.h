@@ -31,7 +31,10 @@ using namespace std;
 //electoral districts
 #define NUM_CONSTITUENCIES 299
 
+//map between federal state names and their key value
 extern std::map<int, std::string> stateMap;
+//short names for all parties involved in election
+extern std::vector<std::string> party_names;
 
 class SainteLague
 {
@@ -52,8 +55,6 @@ struct StateData
     int num_voters = 0;
     int valid_votes[2] = {0, 0};
     int seats_in_bundestag = 0;
-    //data for parties stored in vectors
-    static std::vector<std::string> party_names;
     std::vector<int> first_votes;
     std::vector<int> second_votes;
     std::vector<int> direct_mandates;

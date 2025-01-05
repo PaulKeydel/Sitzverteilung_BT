@@ -29,9 +29,9 @@ void collectDataFromFile(const string& path, array<StateData, NUM_STATES>& dataa
         {
             while (std::getline(line, record, delimiter))
             {
-                if (!record.empty()) StateData::party_names.push_back(record);
+                if (!record.empty()) party_names.push_back(record);
             }
-            StateData::party_names.erase(StateData::party_names.begin() + 7, StateData::party_names.begin() + 20);
+            party_names.erase(party_names.begin() + 7, party_names.begin() + 20);
         }
         //collect electoral data from each electoral district
         if (record.length() == 3 && std::isdigit(record.at(0)))
@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
     array<StateData, NUM_STATES> stData;
 
     //short names of the first seven parties, rest is taken from file
-    StateData::party_names = {"CDU", "SPD", "AfD", "FDP", "Linke", "Gruene", "CSU"};
+    party_names = {"CDU", "SPD", "AfD", "FDP", "Linke", "Gruene", "CSU"};
     collectDataFromFile(filename, stData);
 
     //Sitzkontingente je Bundesland

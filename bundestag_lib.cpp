@@ -19,7 +19,7 @@ std::map<int, std::string> stateMap =
     {BW, "Baden-Wuerttemberg"},
     {SL, "Saarland"}
 };
-vector<std::string> StateData::party_names = {};
+vector<std::string> party_names = {};
 
 
 void SainteLague::init(int totalNumParties, int* distribution, int ptr_offset)
@@ -233,7 +233,7 @@ int Bundestag::calcNumValidParties()
                 dataarray[s].second_votes.erase(dataarray[s].second_votes.begin() + p);
                 dataarray[s].direct_mandates.erase(dataarray[s].direct_mandates.begin() + p);
             }
-            StateData::party_names.erase(StateData::party_names.begin() + p);
+            party_names.erase(party_names.begin() + p);
         }
     }
     assert( dataarray[0].first_votes.size() == dataarray[0].second_votes.size() );
@@ -274,7 +274,7 @@ void Bundestag::summaryPrint0()
     cout << std::left;
     for (int p = 0; p < getNumOfParties(); p++)
     {
-        cout << "Seats for " << std::setw(8) << StateData::party_names.at(p) << ": " << std::setw(3) << Fraktion(p).finalSeats << "  (ÜM "
+        cout << "Seats for " << std::setw(8) << party_names.at(p) << ": " << std::setw(3) << Fraktion(p).finalSeats << "  (ÜM "
           << std::setw(2) << Fraktion(p).surplusMandates << ", AM " << std::setw(2) << Fraktion(p).compensationMandates << ")   ("
           << std::fixed << std::setprecision(2) << (100.0 * getScndVotesForParty(p) / getValidVotes()) << "% votes, "
           << std::fixed << std::setprecision(2) << (100.0 * Fraktion(p).finalSeats / getTotalNumberOfSeats()) << "% seats)" << endl;
@@ -288,7 +288,7 @@ void Bundestag::summaryPrint1()
 {
     for (int party = 0; party < getNumOfParties(); party++)
     {
-        cout << StateData::party_names.at(party) << " - Seats per State" << endl;
+        cout << party_names.at(party) << " - Seats per State" << endl;
         cout << "-------------------------" << endl;
         for (int s = 0; s < NUM_STATES; s++)
         {
