@@ -62,6 +62,7 @@ struct StateData
 
 struct ParlGroupData
 {
+    int secondVotes = 0;
     int surplusMandates = 0;
     int finalSeats = 0;
     int finalSeatsPerState[NUM_STATES] = {0};
@@ -72,13 +73,12 @@ class Bundestag
 {
 private:
     SainteLague sl;
-    std::array<StateData, NUM_STATES>& dataarray;
-    std::vector<ParlGroupData> datapg;
+    std::array<StateData, NUM_STATES>& stateData;
+    std::vector<ParlGroupData> parlGrData;
     bool bUseReform2020;
     int i1reform2024_2reform2020_3before;
     double electoralThr;
     int minNeededDM;
-    int* secondVotes;
     int* initialSeatsInStates[NUM_STATES];
     int totalNumberSeats;
     int validVotes; //total number votes
@@ -90,13 +90,13 @@ private:
 public:
     Bundestag(std::array<StateData, NUM_STATES>& dataFromStates, int i1reform2024_2reform2020_3before, double electoralThreshold, int minNeededDirectMandates);
     ~Bundestag();
-    const ParlGroupData& Fraktion(int party) const {return datapg.at(party);}
-    ParlGroupData& Fraktion(int party) {return datapg.at(party);}
+    const ParlGroupData& Fraktion(int party) const {return parlGrData.at(party);}
+    ParlGroupData& Fraktion(int party) {return parlGrData.at(party);}
+    const StateData& Bundesland(int state) const {return stateData.at(state);}
+    StateData& Bundesland(int state) {return stateData.at(state);}
     void summaryPrint0();
     void summaryPrint1();
-    int const getDirectMandForState(int state, int party) const {return dataarray[state].direct_mandates[party];}
     int const getNumOfParties() const {return numParties;}
     int const getTotalNumberOfSeats() const {return totalNumberSeats;}
     int const getValidVotes() const {return validVotes;}
-    int const getScndVotesForParty(int party) const {return secondVotes[party];}
 };
