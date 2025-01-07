@@ -2,7 +2,7 @@
 #include <fstream>
 #include <sstream>
 
-void collectDataFromFile(const string& path, array<StateData, NUM_STATES>& dataarray)
+int collectDataFromFile(const string& path, array<StateData, NUM_STATES>& dataarray)
 {
     std::stringstream sstream;
     ifstream input_file(path);
@@ -18,6 +18,7 @@ void collectDataFromFile(const string& path, array<StateData, NUM_STATES>& dataa
 
     int itemcnt = 0;
     int sum_sonst1, sum_sonst2 = 0;
+    int orgNumParties = 0;
 
     while (std::getline(sstream, record))
     {
@@ -30,8 +31,10 @@ void collectDataFromFile(const string& path, array<StateData, NUM_STATES>& dataa
             while (std::getline(line, record, delimiter))
             {
                 if (!record.empty()) party_names.push_back(record);
+                if (!record.empty()) orgNumParties++;
             }
             party_names.erase(party_names.begin() + 7, party_names.begin() + 20);
+            orgNumParties -= 6;
         }
         //collect electoral data from each electoral district
         if (record.length() == 3 && std::isdigit(record.at(0)))
@@ -40,7 +43,6 @@ void collectDataFromFile(const string& path, array<StateData, NUM_STATES>& dataa
             StateData* stDataPtr = nullptr;
             int max_first_vote   = 0;
             int won_drct_mandate = 0;
-            bool isFirstConstituencyInState = false;
 
             while (std::getline(line, record, delimiter))
             {
@@ -48,7 +50,6 @@ void collectDataFromFile(const string& path, array<StateData, NUM_STATES>& dataa
                 if (itemcnt == 1)
                 {
                     stDataPtr = &dataarray[ std::stoi(record) - 1 ];
-                    isFirstConstituencyInState = (stDataPtr->second_votes.size() == 0);
                 }
                 //num of eligible voters
                 if (itemcnt == 2) stDataPtr->eligible_voters += std::stoi(record);
@@ -62,13 +63,6 @@ void collectDataFromFile(const string& path, array<StateData, NUM_STATES>& dataa
                 int partyIdx = (itemcnt - 18) / 4;
                 if ( itemcnt > 16 && ((itemcnt - 18) % 4 == 0))
                 {
-                    if (isFirstConstituencyInState)
-                    {
-                        stDataPtr->first_votes.push_back(0);
-                        stDataPtr->second_votes.push_back(0);
-                        stDataPtr->direct_mandates.push_back(0);
-                    }
-                    
                     int val = record.empty() ? 0 : std::stoi(record);
                     stDataPtr->first_votes[partyIdx] += val;
 
@@ -93,11 +87,8 @@ void collectDataFromFile(const string& path, array<StateData, NUM_STATES>& dataa
             }
             assert( stDataPtr != nullptr );
 
-            assert( stDataPtr->first_votes.size() == stDataPtr->second_votes.size() );
-            assert( stDataPtr->second_votes.size() == stDataPtr->direct_mandates.size() );
-            
             sum_sonst1 = 0; sum_sonst2 = 0;
-            for (int k = 0; k < stDataPtr->first_votes.size(); k++)
+            for (int k = 0; k < orgNumParties; k++)
             {
                 sum_sonst1 += stDataPtr->first_votes[k];
                 sum_sonst2 += stDataPtr->second_votes[k];
@@ -109,12 +100,16 @@ void collectDataFromFile(const string& path, array<StateData, NUM_STATES>& dataa
             stDataPtr->direct_mandates[won_drct_mandate]++;
         }
     }
+    assert(orgNumParties == party_names.size());
+
     int sum_direct_mandates = 0;
-    for (int i = 0; i < dataarray[0].first_votes.size(); i++)
+    for (int i = 0; i < orgNumParties; i++)
     {
         for (int j = 0; j < NUM_STATES; j++) sum_direct_mandates += dataarray[j].direct_mandates[i];
     }
     assert( sum_direct_mandates == NUM_CONSTITUENCIES );
+
+    return orgNumParties;
 }
 
 
@@ -126,7 +121,7 @@ int main(int argc, char *argv[])
 
     //short names of the first seven parties, rest is taken from file
     party_names = {"CDU", "SPD", "AfD", "FDP", "Linke", "Gruene", "CSU"};
-    collectDataFromFile(filename, stData);
+    int startingPartiesN = collectDataFromFile(filename, stData);
 
     //Sitzkontingente je Bundesland
     //https://www.bundeswahlleiter.de/mitteilungen/bundestagswahlen/2021/20210909_btw21-sitzkontingente.html
@@ -150,7 +145,7 @@ int main(int argc, char *argv[])
     const int iReformMode = argc > 2 ? atoi(argv[2]) : 2;
     const double dElectThr = argc > 3 ? atof(argv[3]) : 0.05;
     const int iMinNeededDM = argc > 4 ? atoi(argv[4]) : 3;
-    Bundestag bt(stData, iReformMode, dElectThr, iMinNeededDM);
+    Bundestag bt(stData, startingPartiesN, iReformMode, dElectThr, iMinNeededDM);
 
     //print all parties in parliament
     bt.summaryPrint0();

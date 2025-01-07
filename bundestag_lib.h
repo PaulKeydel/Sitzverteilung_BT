@@ -30,6 +30,8 @@ using namespace std;
 
 //electoral districts
 #define NUM_CONSTITUENCIES 299
+//limit of parties that can participate in election
+#define MAX_NUM_PARTIES    100
 
 //map between federal state names and their key value
 extern std::map<int, std::string> stateMap;
@@ -55,9 +57,10 @@ struct StateData
     int num_voters = 0;
     int valid_votes[2] = {0, 0};
     int seats_in_bundestag = 0;
-    std::vector<int> first_votes;
-    std::vector<int> second_votes;
-    std::vector<int> direct_mandates;
+    int first_votes[MAX_NUM_PARTIES] = {0};
+    int second_votes[MAX_NUM_PARTIES] = {0};
+    int direct_mandates[MAX_NUM_PARTIES] = {0};
+    static const int SIZE;
 };
 
 struct ParlGroupData
@@ -67,6 +70,7 @@ struct ParlGroupData
     int finalSeats = 0;
     int finalSeatsPerState[NUM_STATES] = {0};
     int compensationMandates = 0;
+    static const int SIZE;
 };
 
 class Bundestag
@@ -82,13 +86,14 @@ private:
     int* initialSeatsInStates[NUM_STATES];
     int totalNumberSeats;
     int validVotes; //total number votes
+    int initialNumParties;
     int numParties;
     void evalSurplusMandates();
     int calcFinalParliamentSize();
     int calcNumValidParties();
     void calcFinalPartySeatsByState();
 public:
-    Bundestag(std::array<StateData, NUM_STATES>& dataFromStates, int i1reform2024_2reform2020_3before, double electoralThreshold, int minNeededDirectMandates);
+    Bundestag(std::array<StateData, NUM_STATES>& dataFromStates, int numPartiesAtStart, int i1reform2024_2reform2020_3before, double electoralThreshold, int minNeededDirectMandates);
     ~Bundestag();
     const ParlGroupData& Fraktion(int party) const {return parlGrData.at(party);}
     ParlGroupData& Fraktion(int party) {return parlGrData.at(party);}

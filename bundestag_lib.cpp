@@ -21,6 +21,9 @@ std::map<int, std::string> stateMap =
 };
 vector<std::string> party_names = {};
 
+const int ParlGroupData::SIZE = sizeof(ParlGroupData) / sizeof(int);
+const int StateData::SIZE     = 3 * MAX_NUM_PARTIES + 5;
+
 
 void SainteLague::init(int totalNumParties, int* distribution, int ptr_offset)
 {
@@ -64,7 +67,7 @@ void SainteLague::getSeatDist(int totalSeats, int* results, int ptr_offset)
 }
 
 
-Bundestag::Bundestag(array<StateData, NUM_STATES>& dataFromStates, int i1reform2024_2reform2020_3before, double electoralThreshold, int minNeededDirectMandates) : stateData(dataFromStates), i1reform2024_2reform2020_3before(i1reform2024_2reform2020_3before), electoralThr(electoralThreshold), minNeededDM(minNeededDirectMandates)
+Bundestag::Bundestag(array<StateData, NUM_STATES>& dataFromStates, int numPartiesAtStart, int i1reform2024_2reform2020_3before, double electoralThreshold, int minNeededDirectMandates) : stateData(dataFromStates), i1reform2024_2reform2020_3before(i1reform2024_2reform2020_3before), electoralThr(electoralThreshold), minNeededDM(minNeededDirectMandates), initialNumParties(numPartiesAtStart)
 {
     numParties = calcNumValidParties();
     for (int s = 0; s < NUM_STATES; s++)
@@ -88,8 +91,8 @@ Bundestag::Bundestag(array<StateData, NUM_STATES>& dataFromStates, int i1reform2
         totalNumberSeats = 630;
         int votesPerState[NUM_STATES];
         //Oberverteilung nach https://www.bundeswahlleiterin.de/dam/jcr/05f98632-634d-4582-8507-ab3267d66c01/bwg2025_sitzberechnung_erg2021.pdf
-        sl.init(numParties, &Fraktion(0).secondVotes, sizeof(ParlGroupData) / sizeof(int));
-        sl.getSeatDist(totalNumberSeats, &Fraktion(0).finalSeats, sizeof(ParlGroupData) / sizeof(int));
+        sl.init(numParties, &Fraktion(0).secondVotes, ParlGroupData::SIZE);
+        sl.getSeatDist(totalNumberSeats, &Fraktion(0).finalSeats, ParlGroupData::SIZE);
         //Unterverteilung
         for (int party = 0; party < numParties; party++)
         {
@@ -107,7 +110,7 @@ Bundestag::Bundestag(array<StateData, NUM_STATES>& dataFromStates, int i1reform2
         //calc party specific seat allocation in a state <s>
         for (int s = 0; s < NUM_STATES; s++)
         {
-            sl.init(numParties, Bundesland(s).second_votes.data());
+            sl.init(numParties, Bundesland(s).second_votes);
             sl.getSeatDist(Bundesland(s).seats_in_bundestag, initialSeatsInStates[s]);
         }
 
@@ -176,8 +179,8 @@ int Bundestag::calcFinalParliamentSize()
     }
     divList.clear();
 
-    sl.init(numParties, &Fraktion(0).secondVotes, sizeof(ParlGroupData) / sizeof(int));
-    sl.getSeatDist(total_seats, &Fraktion(0).finalSeats, sizeof(ParlGroupData) / sizeof(int));
+    sl.init(numParties, &Fraktion(0).secondVotes, ParlGroupData::SIZE);
+    sl.getSeatDist(total_seats, &Fraktion(0).finalSeats, ParlGroupData::SIZE);
 
     for (int p = 0; p < numParties; p++)
     {
@@ -199,12 +202,11 @@ int Bundestag::calcFinalParliamentSize()
 
 int Bundestag::calcNumValidParties()
 {
-    const int initialNumParties = Bundesland(0).first_votes.size();
+    int finNumParties = initialNumParties;
     validVotes = 0;
     //calc total valid votes
     for (int s = 0; s < NUM_STATES; s++)
     {
-        assert( Bundesland(s).second_votes.size() == initialNumParties );
         validVotes += Bundesland(s).valid_votes[1];
     }
     //clear party list
@@ -215,40 +217,35 @@ int Bundestag::calcNumValidParties()
         bool fulfillNaturalThr = false;
         for (int s = 0; s < NUM_STATES; s++)
         {
-            fulfillNaturalThr |= (Bundesland(s).second_votes.at(p) * Bundesland(s).seats_in_bundestag >= Bundesland(s).valid_votes[1]);
-            scndVotes += Bundesland(s).second_votes.at(p);
-            wonDMs    += Bundesland(s).direct_mandates.at(p);
+            fulfillNaturalThr |= (Bundesland(s).second_votes[p] * Bundesland(s).seats_in_bundestag >= Bundesland(s).valid_votes[1]);
+            scndVotes += Bundesland(s).second_votes[p];
+            wonDMs    += Bundesland(s).direct_mandates[p];
         }
         bool fulfillThr = ((double)scndVotes / (double)validVotes >= electoralThr) || (wonDMs >= minNeededDM);
         if (!fulfillThr || !fulfillNaturalThr)
         {
             for (int s = 0; s < NUM_STATES; s++)
             {
-                Bundesland(s).first_votes.erase(Bundesland(s).first_votes.begin() + p);
-                Bundesland(s).second_votes.erase(Bundesland(s).second_votes.begin() + p);
-                Bundesland(s).direct_mandates.erase(Bundesland(s).direct_mandates.begin() + p);
+                //erase current element p
+                copy(Bundesland(s).first_votes + p + 1, Bundesland(s).first_votes + MAX_NUM_PARTIES, Bundesland(s).first_votes + p);
+                copy(Bundesland(s).second_votes + p + 1, Bundesland(s).second_votes + MAX_NUM_PARTIES, Bundesland(s).second_votes + p);
+                copy(Bundesland(s).direct_mandates + p + 1, Bundesland(s).direct_mandates + MAX_NUM_PARTIES, Bundesland(s).direct_mandates + p);
             }
+            finNumParties--;
             party_names.erase(party_names.begin() + p);
         }
     }
-    assert( Bundesland(0).first_votes.size() == Bundesland(0).second_votes.size() );
-    assert( Bundesland(0).second_votes.size() == Bundesland(0).direct_mandates.size() );
-    return Bundesland(0).second_votes.size();
+    return finNumParties;
 }
 
 void Bundestag::calcFinalPartySeatsByState()
 {
     for (int party = 0; party < this->getNumOfParties(); party++)
     {
-        int votesPerState[NUM_STATES];
         int reduceSeats = 0;
         int actualFinalSeats;
-        for (int s = 0; s < NUM_STATES; s++)
-        {
-            votesPerState[s] = Bundesland(s).second_votes[party];
-        }
 
-        sl.init(NUM_STATES, votesPerState);
+        sl.init(NUM_STATES, &Bundesland(0).second_votes[party], StateData::SIZE);
         do
         {
             sl.getSeatDist(Fraktion(party).finalSeats - reduceSeats, Fraktion(party).finalSeatsPerState);
