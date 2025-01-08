@@ -88,19 +88,20 @@ private:
     int validVotes; //total number votes
     int initialNumParties;
     int numParties;
+    std::vector<std::string> natMinParties;
     void evalSurplusMandates();
     int calcFinalParliamentSize();
     int calcNumValidParties();
     void calcFinalPartySeatsByState();
 public:
-    Bundestag(std::array<StateData, NUM_STATES>& dataFromStates, int numPartiesAtStart, int i1reform2024_2reform2020_3before, double electoralThreshold, int minNeededDirectMandates);
+    Bundestag(std::array<StateData, NUM_STATES>& dataFromStates, int numPartiesAtStart, int i1reform2024_2reform2020_3before, double electoralThreshold, int minNeededDirectMandates, std::vector<std::string>&& listNatMinPar);
     ~Bundestag();
     const ParlGroupData& Fraktion(int party) const {return parlGrData.at(party);}
     ParlGroupData& Fraktion(int party) {return parlGrData.at(party);}
     const StateData& Bundesland(int state) const {return stateData.at(state);}
     StateData& Bundesland(int state) {return stateData.at(state);}
-    void summaryPrint0();
-    void summaryPrint1();
+    void summaryPrint0(std::vector<std::string>&& party_short_names);
+    void summaryPrint1(std::vector<std::string>&& party_short_names);
     int const getNumOfParties() const {return numParties;}
     int const getTotalNumberOfSeats() const {return totalNumberSeats;}
     int const getValidVotes() const {return validVotes;}

@@ -33,7 +33,7 @@ int collectDataFromFile(const string& path, array<StateData, NUM_STATES>& dataar
                 if (!record.empty()) party_names.push_back(record);
                 if (!record.empty()) orgNumParties++;
             }
-            party_names.erase(party_names.begin() + 7, party_names.begin() + 20);
+            party_names.erase(party_names.begin(), party_names.begin() + 6);
             orgNumParties -= 6;
         }
         //collect electoral data from each electoral district
@@ -47,21 +47,18 @@ int collectDataFromFile(const string& path, array<StateData, NUM_STATES>& dataar
             while (std::getline(line, record, delimiter))
             {
                 //get state index
-                if (itemcnt == 1)
-                {
-                    stDataPtr = &dataarray[ std::stoi(record) - 1 ];
-                }
+                if (itemcnt == 1) stDataPtr = &dataarray[ std::stoi(record) - 1 ];
                 //num of eligible voters
                 if (itemcnt == 2) stDataPtr->eligible_voters += std::stoi(record);
                 //number of voters in state
-                if (itemcnt == 6) stDataPtr->num_voters += std::stoi(record);
+                if (itemcnt == 4) stDataPtr->num_voters += std::stoi(record);
                 //number of valid first votes
-                if (itemcnt == 14) stDataPtr->valid_votes[0] += std::stoi(record);
+                if (itemcnt == 8) stDataPtr->valid_votes[0] += std::stoi(record);
                 //number of valid second votes
-                if (itemcnt == 16) stDataPtr->valid_votes[1] += std::stoi(record);
+                if (itemcnt == 9) stDataPtr->valid_votes[1] += std::stoi(record);
                 //first and second votes for parties
-                int partyIdx = (itemcnt - 18) / 4;
-                if ( itemcnt > 16 && ((itemcnt - 18) % 4 == 0))
+                int partyIdx = (itemcnt - 10) / 2;
+                if ( itemcnt > 9 && (itemcnt % 2) == 0)
                 {
                     int val = record.empty() ? 0 : std::stoi(record);
                     stDataPtr->first_votes[partyIdx] += val;
@@ -78,7 +75,7 @@ int collectDataFromFile(const string& path, array<StateData, NUM_STATES>& dataar
                         won_drct_mandate = partyIdx;
                     }
                 }
-                if (itemcnt > 16 && ((itemcnt - 18) % 4 == 2))
+                if (itemcnt > 9 && (itemcnt % 2) == 1)
                 {
                     stDataPtr->second_votes[partyIdx] += record.empty() ? 0 : std::stoi(record);
                 }
@@ -115,12 +112,10 @@ int collectDataFromFile(const string& path, array<StateData, NUM_STATES>& dataar
 
 int main(int argc, char *argv[])
 {
-    string filename(argc > 1 ? argv[1] : "kerg.csv");
+    string filename(argc > 1 ? argv[1] : "kerg_mod.csv");
   
     array<StateData, NUM_STATES> stData;
 
-    //short names of the first seven parties, rest is taken from file
-    party_names = {"CDU", "SPD", "AfD", "FDP", "Linke", "Gruene", "CSU"};
     int startingPartiesN = collectDataFromFile(filename, stData);
 
     //Sitzkontingente je Bundesland
@@ -145,12 +140,12 @@ int main(int argc, char *argv[])
     const int iReformMode = argc > 2 ? atoi(argv[2]) : 2;
     const double dElectThr = argc > 3 ? atof(argv[3]) : 0.05;
     const int iMinNeededDM = argc > 4 ? atoi(argv[4]) : 3;
-    Bundestag bt(stData, startingPartiesN, iReformMode, dElectThr, iMinNeededDM);
+    Bundestag bt(stData, startingPartiesN, iReformMode, dElectThr, iMinNeededDM, vector<string>{"Südschleswigscher Wählerverband"});
 
     //print all parties in parliament
-    bt.summaryPrint0();
+    bt.summaryPrint0(vector<string>{"CDU", "SPD", "AfD", "FDP", "Linke", "Gruene", "CSU", "SSW"});
     //print state summary for each party
-    bt.summaryPrint1();
+    bt.summaryPrint1(vector<string>{"CDU", "SPD", "AfD", "FDP", "Linke", "Gruene", "CSU", "SSW"});
 
     return 0;
 }

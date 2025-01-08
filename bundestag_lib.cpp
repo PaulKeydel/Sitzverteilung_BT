@@ -67,7 +67,13 @@ void SainteLague::getSeatDist(int totalSeats, int* results, int ptr_offset)
 }
 
 
-Bundestag::Bundestag(array<StateData, NUM_STATES>& dataFromStates, int numPartiesAtStart, int i1reform2024_2reform2020_3before, double electoralThreshold, int minNeededDirectMandates) : stateData(dataFromStates), i1reform2024_2reform2020_3before(i1reform2024_2reform2020_3before), electoralThr(electoralThreshold), minNeededDM(minNeededDirectMandates), initialNumParties(numPartiesAtStart)
+Bundestag::Bundestag(array<StateData, NUM_STATES>& dataFromStates, int numPartiesAtStart, int i1reform2024_2reform2020_3before, double electoralThreshold, int minNeededDirectMandates, std::vector<std::string>&& listNatMinPar):
+    stateData(dataFromStates),
+    i1reform2024_2reform2020_3before(i1reform2024_2reform2020_3before),
+    electoralThr(electoralThreshold),
+    minNeededDM(minNeededDirectMandates),
+    initialNumParties(numPartiesAtStart),
+    natMinParties(listNatMinPar)
 {
     numParties = calcNumValidParties();
     for (int s = 0; s < NUM_STATES; s++)
@@ -221,8 +227,9 @@ int Bundestag::calcNumValidParties()
             scndVotes += Bundesland(s).second_votes[p];
             wonDMs    += Bundesland(s).direct_mandates[p];
         }
-        bool fulfillThr = ((double)scndVotes / (double)validVotes >= electoralThr) || (wonDMs >= minNeededDM);
-        if (!fulfillThr || !fulfillNaturalThr)
+        bool fulfillThr    = ((double)scndVotes / (double)validVotes >= electoralThr) || (wonDMs >= minNeededDM);
+        bool fulfillNatMin = (find(natMinParties.begin(), natMinParties.end(), party_names.at(p)) != natMinParties.end());
+        if ((!fulfillThr || !fulfillNaturalThr) && !fulfillNatMin)
         {
             for (int s = 0; s < NUM_STATES; s++)
             {
@@ -261,12 +268,13 @@ void Bundestag::calcFinalPartySeatsByState()
     }
 }
 
-void Bundestag::summaryPrint0()
+void Bundestag::summaryPrint0(vector<string>&& party_short_names)
 {
+    assert(party_short_names.size() == parlGrData.size());
     cout << std::left;
     for (int p = 0; p < getNumOfParties(); p++)
     {
-        cout << "Seats for " << std::setw(8) << party_names.at(p) << ": " << std::setw(3) << Fraktion(p).finalSeats << "  (ÜM "
+        cout << "Seats for " << std::setw(8) << party_short_names.at(p) << ": " << std::setw(3) << Fraktion(p).finalSeats << "  (ÜM "
           << std::setw(2) << Fraktion(p).surplusMandates << ", AM " << std::setw(2) << Fraktion(p).compensationMandates << ")   ("
           << std::fixed << std::setprecision(2) << (100.0 * Fraktion(p).secondVotes / getValidVotes()) << "% votes, "
           << std::fixed << std::setprecision(2) << (100.0 * Fraktion(p).finalSeats / getTotalNumberOfSeats()) << "% seats)" << endl;
@@ -276,11 +284,12 @@ void Bundestag::summaryPrint0()
     cout << "-------------------------" << endl;
 }
 
-void Bundestag::summaryPrint1()
+void Bundestag::summaryPrint1(vector<string>&& party_short_names)
 {
+    assert(party_short_names.size() == parlGrData.size());
     for (int party = 0; party < getNumOfParties(); party++)
     {
-        cout << party_names.at(party) << " - Seats per State" << endl;
+        cout << party_short_names.at(party) << " - Seats per State" << endl;
         cout << "-------------------------" << endl;
         for (int s = 0; s < NUM_STATES; s++)
         {
