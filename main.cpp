@@ -140,12 +140,12 @@ int main(int argc, char *argv[])
     const int iReformMode = argc > 2 ? atoi(argv[2]) : 2;
     const double dElectThr = argc > 3 ? atof(argv[3]) : 0.05;
     const int iMinNeededDM = argc > 4 ? atoi(argv[4]) : 3;
-    Bundestag bt(stData, startingPartiesN, iReformMode, dElectThr, iMinNeededDM, vector<string>{"Südschleswigscher Wählerverband"});
+    Bundestag bt(stData, startingPartiesN, iReformMode, dElectThr, iMinNeededDM, vector<string>{"SSW"});
 
     //print all parties in parliament
-    bt.summaryPrint0(vector<string>{"CDU", "SPD", "AfD", "FDP", "Linke", "Gruene", "CSU", "SSW"});
+    bt.summaryPrint0();
     //print state summary for each party
-    bt.summaryPrint1(vector<string>{"CDU", "SPD", "AfD", "FDP", "Linke", "Gruene", "CSU", "SSW"});
+    bt.summaryPrint1();
 
     return 0;
 }

@@ -100,8 +100,8 @@ public:
     ParlGroupData& Fraktion(int party) {return parlGrData.at(party);}
     const StateData& Bundesland(int state) const {return stateData.at(state);}
     StateData& Bundesland(int state) {return stateData.at(state);}
-    void summaryPrint0(std::vector<std::string>&& party_short_names);
-    void summaryPrint1(std::vector<std::string>&& party_short_names);
+    void summaryPrint0();
+    void summaryPrint1();
     int const getNumOfParties() const {return numParties;}
     int const getTotalNumberOfSeats() const {return totalNumberSeats;}
     int const getValidVotes() const {return validVotes;}
