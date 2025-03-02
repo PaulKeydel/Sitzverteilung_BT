@@ -17,10 +17,6 @@ debug: $(TARGET)
 
 $(TARGET): $(OBJS)
 	$(CC) $(LFLAGS) $^ -o $@
-#	save results to text file
-	./$(TARGET) kerg_mod.csv 3 > results_before2020.txt
-	./$(TARGET) kerg_mod.csv 2 > results_reform2020.txt
-	./$(TARGET) kerg_mod.csv 1 > results_reform2024.txt
 
 clean:
 	rm *.o

@@ -112,7 +112,8 @@ int collectDataFromFile(const string& path, array<StateData, NUM_STATES>& dataar
 
 int main(int argc, char *argv[])
 {
-    string filename(argc > 1 ? argv[1] : "kerg_mod.csv");
+    const string filename = argc > 1 ? argv[1] : "kerg_mod.csv";
+    const int iReformMode = argc > 2 ? atoi(argv[2]) : 2;
   
     array<StateData, NUM_STATES> stData;
 
@@ -137,10 +138,13 @@ int main(int argc, char *argv[])
     stData[BW].seats_in_bundestag = 77;
     stData[SL].seats_in_bundestag = 7;
 
-    const int iReformMode = argc > 2 ? atoi(argv[2]) : 2;
-    const double dElectThr = argc > 3 ? atof(argv[3]) : 0.05;
-    const int iMinNeededDM = argc > 4 ? atoi(argv[4]) : 3;
-    Bundestag bt(stData, startingPartiesN, iReformMode, dElectThr, iMinNeededDM, vector<string>{"SSW"});
+    double dElectThr;
+    cout << "Bitte Sperrklausel eingeben (in Prozent; 0 wenn keine berücksichtigt werden soll): ";
+    cin >> dElectThr;
+    int iMinNeededDM;
+    cout << "Bitte Anzahl der minimalen Sitze für Grundmandatsklausel eingeben (0 wenn keine Anwendung der GMK): ";
+    cin >> iMinNeededDM;
+    Bundestag bt(stData, startingPartiesN, iReformMode, dElectThr / 100.0, iMinNeededDM, vector<string>{"SSW"});
 
     //print all parties in parliament
     bt.summaryPrint0();

@@ -227,9 +227,9 @@ int Bundestag::calcNumValidParties()
             scndVotes += Bundesland(s).second_votes[p];
             wonDMs    += Bundesland(s).direct_mandates[p];
         }
-        bool fulfillThr    = ((double)scndVotes / (double)validVotes >= electoralThr) || (wonDMs >= minNeededDM);
-        bool fulfillNatMin = (find(natMinParties.begin(), natMinParties.end(), party_names.at(p)) != natMinParties.end());
-        if ((!fulfillThr || !fulfillNaturalThr) && !fulfillNatMin)
+        const bool fulfillThr    = ((double)scndVotes / (double)validVotes >= electoralThr) || (wonDMs >= minNeededDM);
+        const bool isNatMinParty = (find(natMinParties.begin(), natMinParties.end(), party_names.at(p)) != natMinParties.end());
+        if ((!fulfillThr || !fulfillNaturalThr) && !isNatMinParty)
         {
             for (int s = 0; s < NUM_STATES; s++)
             {

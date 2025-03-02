@@ -1,3 +1,5 @@
+Bitte Sperrklausel eingeben (in Prozent; 0 wenn keine berücksichtigt werden soll): 5
+Bitte Anzahl der minimalen Sitze für Grundmandatsklausel eingeben (0 wenn keine Anwendung der GMK): 3
 Seats for CDU     : 130  (ÜM 0 , AM 0 )   (18.90% votes, 20.63% seats)
 Seats for SPD     : 177  (ÜM 0 , AM 0 )   (25.74% votes, 28.10% seats)
 Seats for AfD     : 71   (ÜM 0 , AM 0 )   (10.34% votes, 11.27% seats)
