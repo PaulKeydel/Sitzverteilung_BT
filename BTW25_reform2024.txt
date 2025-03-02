@@ -15,7 +15,7 @@ SPD - Seats per State
 Schleswig-Holstein     : 5  (DM 1)
 Hamburg                : 3  (DM 3)
 Niedersachsen          : 17  (DM 15)
-Bremen                 : 1  (DM 2)
+Bremen                 : 1  (DM 2)   <-- 1 winner/s not represented in Bundestag
 Nordrhein-Westfalen    : 31  (DM 17)
 Hessen                 : 10  (DM 2)
 Rheinland-Pfalz        : 7  (DM 1)
@@ -31,14 +31,14 @@ Thueringen             : 2  (DM 0)
 -------------------------
 CDU - Seats per State
 -------------------------
-Schleswig-Holstein     : 8  (DM 9)
+Schleswig-Holstein     : 8  (DM 9)   <-- 1 winner/s not represented in Bundestag
 Hamburg                : 3  (DM 1)
 Niedersachsen          : 21  (DM 15)
 Bremen                 : 1  (DM 0)
 Nordrhein-Westfalen    : 47  (DM 44)
-Hessen                 : 15  (DM 20)
-Rheinland-Pfalz        : 11  (DM 14)
-Baden-Wuerttemberg     : 29  (DM 35)
+Hessen                 : 15  (DM 20)   <-- 5 winner/s not represented in Bundestag
+Rheinland-Pfalz        : 11  (DM 14)   <-- 3 winner/s not represented in Bundestag
+Baden-Wuerttemberg     : 29  (DM 35)   <-- 6 winner/s not represented in Bundestag
 Bayern                 : 0  (DM 0)
 Saarland               : 2  (DM 2)
 Berlin                 : 5  (DM 3)
@@ -80,10 +80,10 @@ Baden-Wuerttemberg     : 19  (DM 0)
 Bayern                 : 22  (DM 0)
 Saarland               : 2  (DM 0)
 Berlin                 : 4  (DM 1)
-Brandenburg            : 8  (DM 9)
-Mecklenburg-Vorpommern : 5  (DM 6)
-Sachsen                : 14  (DM 15)
-Sachsen-Anhalt         : 7  (DM 8)
+Brandenburg            : 8  (DM 9)   <-- 1 winner/s not represented in Bundestag
+Mecklenburg-Vorpommern : 5  (DM 6)   <-- 1 winner/s not represented in Bundestag
+Sachsen                : 14  (DM 15)   <-- 1 winner/s not represented in Bundestag
+Sachsen-Anhalt         : 7  (DM 8)   <-- 1 winner/s not represented in Bundestag
 Thueringen             : 8  (DM 7)
 -------------------------
 CSU - Seats per State
@@ -96,7 +96,7 @@ Nordrhein-Westfalen    : 0  (DM 0)
 Hessen                 : 0  (DM 0)
 Rheinland-Pfalz        : 0  (DM 0)
 Baden-Wuerttemberg     : 0  (DM 0)
-Bayern                 : 44  (DM 47)
+Bayern                 : 44  (DM 47)   <-- 3 winner/s not represented in Bundestag
 Saarland               : 0  (DM 0)
 Berlin                 : 0  (DM 0)
 Brandenburg            : 0  (DM 0)

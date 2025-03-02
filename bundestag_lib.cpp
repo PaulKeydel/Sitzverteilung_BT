@@ -291,7 +291,11 @@ void Bundestag::summaryPrint1()
         cout << "-------------------------" << endl;
         for (int s = 0; s < NUM_STATES; s++)
         {
-            cout << std::setw(22) << stateMap.at(s) << " : " << Fraktion(party).finalSeatsPerState[s] << "  (DM " <<  Bundesland(s).direct_mandates[party] << ")" << endl;
+            cout << std::setw(22) << stateMap.at(s) << " : " << Fraktion(party).finalSeatsPerState[s] << "  (DM " <<  Bundesland(s).direct_mandates[party] << ")";
+            int iOverhang = Bundesland(s).direct_mandates[party] - Fraktion(party).finalSeatsPerState[s];
+            if (i1reform2024_2reform2020_3before != 1) assert(iOverhang <= 0);
+            if (iOverhang > 0) cout << "   <-- " << iOverhang << " winner/s not represented in Bundestag";
+            cout << endl;
         }
         cout << "-------------------------" << endl;
     }
