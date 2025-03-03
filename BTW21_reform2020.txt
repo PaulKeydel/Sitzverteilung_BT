@@ -20,7 +20,7 @@ Bremen                 : 1  (DM 0)
 Nordrhein-Westfalen    : 42  (DM 30)
 Hessen                 : 12  (DM 7)
 Rheinland-Pfalz        : 9  (DM 7)
-Baden-Wuerttemberg     : 33  (DM 33)
+Baden-Wuerttemberg     : 33  (DM 33)   <-- 12 surplus mandate/s achieved
 Bayern                 : 0  (DM 0)
 Saarland               : 2  (DM 0)
 Berlin                 : 5  (DM 3)
@@ -32,19 +32,19 @@ Thueringen             : 3  (DM 1)
 -------------------------
 SPD - Seats per State
 -------------------------
-Schleswig-Holstein     : 8  (DM 8)
+Schleswig-Holstein     : 8  (DM 8)   <-- 2 surplus mandate/s achieved
 Hamburg                : 5  (DM 4)
-Niedersachsen          : 25  (DM 22)
+Niedersachsen          : 25  (DM 22)   <-- 1 surplus mandate/s achieved
 Bremen                 : 2  (DM 2)
 Nordrhein-Westfalen    : 49  (DM 30)
-Hessen                 : 15  (DM 14)
+Hessen                 : 15  (DM 14)   <-- 1 surplus mandate/s achieved
 Rheinland-Pfalz        : 12  (DM 8)
 Baden-Wuerttemberg     : 22  (DM 1)
 Bayern                 : 23  (DM 0)
-Saarland               : 4  (DM 4)
+Saarland               : 4  (DM 4)   <-- 1 surplus mandate/s achieved
 Berlin                 : 7  (DM 4)
-Brandenburg            : 10  (DM 10)
-Mecklenburg-Vorpommern : 6  (DM 6)
+Brandenburg            : 10  (DM 10)   <-- 3 surplus mandate/s achieved
+Mecklenburg-Vorpommern : 6  (DM 6)   <-- 2 surplus mandate/s achieved
 Sachsen                : 8  (DM 1)
 Sachsen-Anhalt         : 5  (DM 4)
 Thueringen             : 5  (DM 3)
@@ -64,7 +64,7 @@ Saarland               : 1  (DM 0)
 Berlin                 : 3  (DM 0)
 Brandenburg            : 5  (DM 0)
 Mecklenburg-Vorpommern : 3  (DM 0)
-Sachsen                : 10  (DM 10)
+Sachsen                : 10  (DM 10)   <-- 1 surplus mandate/s achieved
 Sachsen-Anhalt         : 4  (DM 2)
 Thueringen             : 5  (DM 4)
 -------------------------
@@ -135,7 +135,7 @@ Nordrhein-Westfalen    : 0  (DM 0)
 Hessen                 : 0  (DM 0)
 Rheinland-Pfalz        : 0  (DM 0)
 Baden-Wuerttemberg     : 0  (DM 0)
-Bayern                 : 45  (DM 45)
+Bayern                 : 45  (DM 45)   <-- 11 surplus mandate/s achieved
 Saarland               : 0  (DM 0)
 Berlin                 : 0  (DM 0)
 Brandenburg            : 0  (DM 0)

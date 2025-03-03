@@ -15,7 +15,7 @@ SPD - Seats per State
 Schleswig-Holstein     : 5  (DM 1)
 Hamburg                : 3  (DM 3)
 Niedersachsen          : 17  (DM 15)
-Bremen                 : 2  (DM 2)
+Bremen                 : 2  (DM 2)   <-- 1 surplus mandate/s achieved
 Nordrhein-Westfalen    : 31  (DM 17)
 Hessen                 : 10  (DM 2)
 Rheinland-Pfalz        : 7  (DM 1)
@@ -31,14 +31,14 @@ Thueringen             : 2  (DM 0)
 -------------------------
 CDU - Seats per State
 -------------------------
-Schleswig-Holstein     : 9  (DM 9)
+Schleswig-Holstein     : 9  (DM 9)   <-- 2 surplus mandate/s achieved
 Hamburg                : 3  (DM 1)
 Niedersachsen          : 17  (DM 15)
 Bremen                 : 1  (DM 0)
 Nordrhein-Westfalen    : 44  (DM 44)
-Hessen                 : 20  (DM 20)
-Rheinland-Pfalz        : 14  (DM 14)
-Baden-Wuerttemberg     : 35  (DM 35)
+Hessen                 : 20  (DM 20)   <-- 5 surplus mandate/s achieved
+Rheinland-Pfalz        : 14  (DM 14)   <-- 3 surplus mandate/s achieved
+Baden-Wuerttemberg     : 35  (DM 35)   <-- 7 surplus mandate/s achieved
 Bayern                 : 0  (DM 0)
 Saarland               : 2  (DM 2)
 Berlin                 : 4  (DM 3)
@@ -80,9 +80,9 @@ Baden-Wuerttemberg     : 18  (DM 0)
 Bayern                 : 22  (DM 0)
 Saarland               : 2  (DM 0)
 Berlin                 : 4  (DM 1)
-Brandenburg            : 9  (DM 9)
-Mecklenburg-Vorpommern : 6  (DM 6)
-Sachsen                : 15  (DM 15)
+Brandenburg            : 9  (DM 9)   <-- 1 surplus mandate/s achieved
+Mecklenburg-Vorpommern : 6  (DM 6)   <-- 1 surplus mandate/s achieved
+Sachsen                : 15  (DM 15)   <-- 1 surplus mandate/s achieved
 Sachsen-Anhalt         : 8  (DM 8)
 Thueringen             : 7  (DM 7)
 -------------------------
@@ -96,7 +96,7 @@ Nordrhein-Westfalen    : 0  (DM 0)
 Hessen                 : 0  (DM 0)
 Rheinland-Pfalz        : 0  (DM 0)
 Baden-Wuerttemberg     : 0  (DM 0)
-Bayern                 : 47  (DM 47)
+Bayern                 : 47  (DM 47)   <-- 7 surplus mandate/s achieved
 Saarland               : 0  (DM 0)
 Berlin                 : 0  (DM 0)
 Brandenburg            : 0  (DM 0)

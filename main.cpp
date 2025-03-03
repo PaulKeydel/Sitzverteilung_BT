@@ -147,9 +147,9 @@ int main(int argc, char *argv[])
     Bundestag bt(stData, startingPartiesN, iReformMode, dElectThr / 100.0, iMinNeededDM, vector<string>{"SSW"});
 
     //print all parties in parliament
-    bt.summaryPrint0();
+    bt.printSummary();
     //print state summary for each party
-    bt.summaryPrint1();
+    bt.printPartySummary();
 
     return 0;
 }

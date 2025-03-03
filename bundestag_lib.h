@@ -60,6 +60,7 @@ struct StateData
     int first_votes[MAX_NUM_PARTIES] = {0};
     int second_votes[MAX_NUM_PARTIES] = {0};
     int direct_mandates[MAX_NUM_PARTIES] = {0};
+    int surplus_mandates[MAX_NUM_PARTIES] = {0};
     static const int SIZE;
 };
 
@@ -100,8 +101,8 @@ public:
     ParlGroupData& Fraktion(int party) {return parlGrData.at(party);}
     const StateData& Bundesland(int state) const {return stateData.at(state);}
     StateData& Bundesland(int state) {return stateData.at(state);}
-    void summaryPrint0();
-    void summaryPrint1();
+    void printSummary();
+    void printPartySummary();
     int const getNumOfParties() const {return numParties;}
     int const getTotalNumberOfSeats() const {return totalNumberSeats;}
     int const getValidVotes() const {return validVotes;}

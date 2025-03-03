@@ -22,7 +22,7 @@ std::map<int, std::string> stateMap =
 vector<std::string> party_names = {};
 
 const int ParlGroupData::SIZE = sizeof(ParlGroupData) / sizeof(int);
-const int StateData::SIZE     = 3 * MAX_NUM_PARTIES + 5;
+const int StateData::SIZE     = 4 * MAX_NUM_PARTIES + 5;
 
 
 void SainteLague::init(int totalNumParties, int* distribution, int ptr_offset)
@@ -150,11 +150,13 @@ void Bundestag::evalSurplusMandates()
             {
                 int diff = std::max(dm, (int)ceil(0.5 * (dm + initialSeatsInStates[s][p]))) - initialSeatsInStates[s][p];
                 Fraktion(p).surplusMandates += diff;
+                Bundesland(s).surplus_mandates[p] = diff;
             }
             else
             {
                 int diff = std::max(dm, initialSeatsInStates[s][p]) - initialSeatsInStates[s][p];
                 Fraktion(p).surplusMandates += diff;
+                Bundesland(s).surplus_mandates[p] = diff;
             }
         }
         if (bUseReform2020)
@@ -268,7 +270,7 @@ void Bundestag::calcFinalPartySeatsByState()
     }
 }
 
-void Bundestag::summaryPrint0()
+void Bundestag::printSummary()
 {
     cout << std::left;
     for (int p = 0; p < getNumOfParties(); p++)
@@ -283,7 +285,7 @@ void Bundestag::summaryPrint0()
     cout << "-------------------------" << endl;
 }
 
-void Bundestag::summaryPrint1()
+void Bundestag::printPartySummary()
 {
     for (int party = 0; party < getNumOfParties(); party++)
     {
@@ -293,8 +295,15 @@ void Bundestag::summaryPrint1()
         {
             cout << std::setw(22) << stateMap.at(s) << " : " << Fraktion(party).finalSeatsPerState[s] << "  (DM " <<  Bundesland(s).direct_mandates[party] << ")";
             int iOverhang = Bundesland(s).direct_mandates[party] - Fraktion(party).finalSeatsPerState[s];
-            if (i1reform2024_2reform2020_3before != 1) assert(iOverhang <= 0);
-            if (iOverhang > 0) cout << "   <-- " << iOverhang << " winner/s not represented in Bundestag";
+            if (i1reform2024_2reform2020_3before != 1)
+            {
+                assert(iOverhang <= 0);
+                if (Bundesland(s).surplus_mandates[party] > 0) cout << "   <-- " << Bundesland(s).surplus_mandates[party] << " surplus mandate/s achieved";
+            }
+            else
+            {
+                if (iOverhang > 0) cout << "   <-- " << iOverhang << " winner/s not represented in Bundestag";
+            }
             cout << endl;
         }
         cout << "-------------------------" << endl;
