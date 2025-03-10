@@ -21,7 +21,7 @@ std::map<int, std::string> stateMap =
 };
 vector<std::string> party_names = {};
 
-const int ParlGroupData::SIZE = sizeof(ParlGroupData) / sizeof(int);
+const int ParlGroupData::SIZE = NUM_STATES + 5;
 const int StateData::SIZE     = 4 * MAX_NUM_PARTIES + 5;
 
 
@@ -173,19 +173,40 @@ int Bundestag::calcFinalParliamentSize()
     std::vector<double> divList;
     for (int p = 0; p < numParties; p++)
     {
-        Fraktion(p).finalSeats = bUseReform2020 ? std::max(0, (Fraktion(p).surplusMandates - 3)) : Fraktion(p).surplusMandates;
+        Fraktion(p).necessarySeats = Fraktion(p).surplusMandates;
         for (int s = 0; s < NUM_STATES; s++)
         {
-            Fraktion(p).finalSeats += initialSeatsInStates[s][p];
+            Fraktion(p).necessarySeats += initialSeatsInStates[s][p];
         }
-        divList.push_back( (double)Fraktion(p).secondVotes / ((double)Fraktion(p).finalSeats - 0.5) );
+        divList.push_back( (double)Fraktion(p).secondVotes / ((double)Fraktion(p).necessarySeats - 0.5) );
     }
     const double d = *std::min_element(divList.begin(), divList.end());
-    for (int p = 0; p < numParties; p++)
+    int remaining_surplus[MAX_NUM_PARTIES] = {598};
+    total_seats = 597;
+    if (bUseReform2020)
     {
-        total_seats += (int)round((double)Fraktion(p).secondVotes / d);
+        while (accumulate(begin(remaining_surplus), end(remaining_surplus), 0, plus<int>()) > 3)
+        {
+            total_seats += 1;
+
+            sl.init(numParties, &Fraktion(0).secondVotes, ParlGroupData::SIZE);
+            sl.getSeatDist(total_seats, &Fraktion(0).finalSeats, ParlGroupData::SIZE);
+
+            for (int p = 0; p < numParties; p++)
+            {
+                remaining_surplus[p] = Fraktion(p).surplusMandates > 0 ? Fraktion(p).necessarySeats - Fraktion(p).finalSeats : 0;
+            }
+        }
     }
-    divList.clear();
+    else
+    {
+        total_seats = 0;
+        for (int p = 0; p < numParties; p++)
+        {
+            total_seats += (int)round((double)Fraktion(p).secondVotes / d);
+        }
+        divList.clear();
+    }
 
     sl.init(numParties, &Fraktion(0).secondVotes, ParlGroupData::SIZE);
     sl.getSeatDist(total_seats, &Fraktion(0).finalSeats, ParlGroupData::SIZE);
@@ -194,9 +215,8 @@ int Bundestag::calcFinalParliamentSize()
     {
         if (bUseReform2020)
         {
-            int iadd = (Fraktion(p).surplusMandates - std::max(0, (Fraktion(p).surplusMandates - 3)));
-            Fraktion(p).finalSeats += iadd;
-            total_seats += iadd;
+            Fraktion(p).finalSeats += remaining_surplus[p];
+            total_seats += remaining_surplus[p];
         }
 
         Fraktion(p).compensationMandates = Fraktion(p).finalSeats - Fraktion(p).surplusMandates;

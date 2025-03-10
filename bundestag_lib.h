@@ -1,5 +1,6 @@
 #include "stdio.h"
 #include <cassert>
+#include <numeric>
 #include <iostream>
 #include <vector>
 #include <array>
@@ -68,6 +69,7 @@ struct ParlGroupData
 {
     int secondVotes = 0;
     int surplusMandates = 0;
+    int necessarySeats = 0;
     int finalSeats = 0;
     int finalSeatsPerState[NUM_STATES] = {0};
     int compensationMandates = 0;

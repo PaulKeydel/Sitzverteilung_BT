@@ -1,0 +1,145 @@
+Bitte Sperrklausel eingeben (in Prozent; 0 wenn keine berücksichtigt werden soll): 5
+Bitte Anzahl der minimalen Sitze für Grundmandatsklausel eingeben (0 wenn keine Anwendung der GMK): 3
+Seats for CDU     : 194  (ÜM 30, AM 0 )   (26.76% votes, 28.28% seats)
+Seats for SPD     : 148  (ÜM 0 , AM 17)   (20.51% votes, 21.57% seats)
+Seats for LINKE   : 66   (ÜM 0 , AM 7 )   (9.24% votes, 9.62% seats)
+Seats for Gruene  : 64   (ÜM 0 , AM 7 )   (8.94% votes, 9.33% seats)
+Seats for CSU     : 46   (ÜM 7 , AM 0 )   (6.17% votes, 6.71% seats)
+Seats for FDP     : 77   (ÜM 0 , AM 12)   (10.75% votes, 11.22% seats)
+Seats for AfD     : 91   (ÜM 0 , AM 8 )   (12.64% votes, 13.27% seats)
+-------------------------
+Total seats: 686
+-------------------------
+CDU - Seats per State
+-------------------------
+Schleswig-Holstein     : 10  (DM 10)   <-- 3 surplus mandate/s achieved
+Hamburg                : 3  (DM 1)
+Niedersachsen          : 20  (DM 16)
+Bremen                 : 1  (DM 0)
+Nordrhein-Westfalen    : 39  (DM 38)
+Hessen                 : 17  (DM 17)   <-- 3 surplus mandate/s achieved
+Rheinland-Pfalz        : 14  (DM 14)   <-- 3 surplus mandate/s achieved
+Baden-Wuerttemberg     : 38  (DM 38)   <-- 11 surplus mandate/s achieved
+Bayern                 : 0  (DM 0)
+Saarland               : 3  (DM 3)   <-- 1 surplus mandate/s achieved
+Berlin                 : 5  (DM 4)
+Brandenburg            : 9  (DM 9)   <-- 3 surplus mandate/s achieved
+Mecklenburg-Vorpommern : 6  (DM 6)   <-- 2 surplus mandate/s achieved
+Sachsen                : 12  (DM 12)   <-- 3 surplus mandate/s achieved
+Sachsen-Anhalt         : 9  (DM 9)   <-- 4 surplus mandate/s achieved
+Thueringen             : 8  (DM 8)   <-- 3 surplus mandate/s achieved
+-------------------------
+SPD - Seats per State
+-------------------------
+Schleswig-Holstein     : 6  (DM 1)
+Hamburg                : 5  (DM 5)   <-- 2 surplus mandate/s achieved
+Niedersachsen          : 20  (DM 14)
+Bremen                 : 2  (DM 2)   <-- 1 surplus mandate/s achieved
+Nordrhein-Westfalen    : 39  (DM 26)
+Hessen                 : 12  (DM 5)
+Rheinland-Pfalz        : 9  (DM 1)
+Baden-Wuerttemberg     : 15  (DM 0)
+Bayern                 : 17  (DM 0)
+Saarland               : 2  (DM 1)
+Berlin                 : 5  (DM 3)
+Brandenburg            : 4  (DM 1)
+Mecklenburg-Vorpommern : 2  (DM 0)
+Sachsen                : 4  (DM 0)
+Sachsen-Anhalt         : 3  (DM 0)
+Thueringen             : 3  (DM 0)
+-------------------------
+LINKE - Seats per State
+-------------------------
+Schleswig-Holstein     : 2  (DM 0)
+Hamburg                : 2  (DM 0)
+Niedersachsen          : 5  (DM 0)
+Bremen                 : 1  (DM 0)
+Nordrhein-Westfalen    : 11  (DM 0)
+Hessen                 : 4  (DM 0)
+Rheinland-Pfalz        : 3  (DM 0)
+Baden-Wuerttemberg     : 6  (DM 0)
+Bayern                 : 7  (DM 0)
+Saarland               : 1  (DM 0)
+Berlin                 : 5  (DM 4)
+Brandenburg            : 4  (DM 0)
+Mecklenburg-Vorpommern : 3  (DM 0)
+Sachsen                : 6  (DM 1)
+Sachsen-Anhalt         : 3  (DM 0)
+Thueringen             : 3  (DM 0)
+-------------------------
+Gruene - Seats per State
+-------------------------
+Schleswig-Holstein     : 3  (DM 0)
+Hamburg                : 2  (DM 0)
+Niedersachsen          : 6  (DM 0)
+Bremen                 : 1  (DM 0)
+Nordrhein-Westfalen    : 11  (DM 0)
+Hessen                 : 5  (DM 0)
+Rheinland-Pfalz        : 3  (DM 0)
+Baden-Wuerttemberg     : 12  (DM 0)
+Bayern                 : 11  (DM 0)
+Saarland               : 1  (DM 0)
+Berlin                 : 3  (DM 1)
+Brandenburg            : 1  (DM 0)
+Mecklenburg-Vorpommern : 1  (DM 0)
+Sachsen                : 2  (DM 0)
+Sachsen-Anhalt         : 1  (DM 0)
+Thueringen             : 1  (DM 0)
+-------------------------
+CSU - Seats per State
+-------------------------
+Schleswig-Holstein     : 0  (DM 0)
+Hamburg                : 0  (DM 0)
+Niedersachsen          : 0  (DM 0)
+Bremen                 : 0  (DM 0)
+Nordrhein-Westfalen    : 0  (DM 0)
+Hessen                 : 0  (DM 0)
+Rheinland-Pfalz        : 0  (DM 0)
+Baden-Wuerttemberg     : 0  (DM 0)
+Bayern                 : 46  (DM 46)   <-- 7 surplus mandate/s achieved
+Saarland               : 0  (DM 0)
+Berlin                 : 0  (DM 0)
+Brandenburg            : 0  (DM 0)
+Mecklenburg-Vorpommern : 0  (DM 0)
+Sachsen                : 0  (DM 0)
+Sachsen-Anhalt         : 0  (DM 0)
+Thueringen             : 0  (DM 0)
+-------------------------
+FDP - Seats per State
+-------------------------
+Schleswig-Holstein     : 3  (DM 0)
+Hamburg                : 2  (DM 0)
+Niedersachsen          : 7  (DM 0)
+Bremen                 : 0  (DM 0)
+Nordrhein-Westfalen    : 20  (DM 0)
+Hessen                 : 6  (DM 0)
+Rheinland-Pfalz        : 4  (DM 0)
+Baden-Wuerttemberg     : 11  (DM 0)
+Bayern                 : 11  (DM 0)
+Saarland               : 1  (DM 0)
+Berlin                 : 3  (DM 0)
+Brandenburg            : 2  (DM 0)
+Mecklenburg-Vorpommern : 1  (DM 0)
+Sachsen                : 3  (DM 0)
+Sachsen-Anhalt         : 1  (DM 0)
+Thueringen             : 2  (DM 0)
+-------------------------
+AfD - Seats per State
+-------------------------
+Schleswig-Holstein     : 2  (DM 0)
+Hamburg                : 1  (DM 0)
+Niedersachsen          : 7  (DM 0)
+Bremen                 : 1  (DM 0)
+Nordrhein-Westfalen    : 14  (DM 0)
+Hessen                 : 6  (DM 0)
+Rheinland-Pfalz        : 4  (DM 0)
+Baden-Wuerttemberg     : 11  (DM 0)
+Bayern                 : 14  (DM 0)
+Saarland               : 1  (DM 0)
+Berlin                 : 3  (DM 0)
+Brandenburg            : 5  (DM 0)
+Mecklenburg-Vorpommern : 3  (DM 0)
+Sachsen                : 10  (DM 3)
+Sachsen-Anhalt         : 4  (DM 0)
+Thueringen             : 5  (DM 0)
+-------------------------

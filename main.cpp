@@ -25,6 +25,16 @@ int collectDataFromFile(const string& path, array<StateData, NUM_STATES>& dataar
         istringstream line(record);
 
         std::getline(line, record, delimiter);
+        //collect seat contingent in states
+        if (record == "Kontingent")
+        {
+            itemcnt = 0;
+            while (std::getline(line, record, delimiter))
+            {
+                if (!record.empty()) dataarray[itemcnt].seats_in_bundestag = stoi(record);
+                itemcnt++;
+            }
+        }
         //collect further party names
         if (record == "Nr")
         {
@@ -119,24 +129,26 @@ int main(int argc, char *argv[])
 
     int startingPartiesN = collectDataFromFile(filename, stData);
 
+/*
     //Sitzkontingente je Bundesland
     //https://www.bundeswahlleiter.de/mitteilungen/bundestagswahlen/2021/20210909_btw21-sitzkontingente.html
     stData[SH].seats_in_bundestag = 22;
     stData[MV].seats_in_bundestag = 13;
-    stData[HH].seats_in_bundestag = 13;
+    stData[HH].seats_in_bundestag = 12;//13;
     stData[NI].seats_in_bundestag = 59;
     stData[HB].seats_in_bundestag = 5;
     stData[BB].seats_in_bundestag = 20;
     stData[ST].seats_in_bundestag = 17;
     stData[BE].seats_in_bundestag = 24;
-    stData[NW].seats_in_bundestag = 127;
+    stData[NW].seats_in_bundestag = 128;//127;
     stData[SN].seats_in_bundestag = 32;
     stData[HE].seats_in_bundestag = 43;
-    stData[TH].seats_in_bundestag = 16;
+    stData[TH].seats_in_bundestag = 17;//16;
     stData[RP].seats_in_bundestag = 30;
     stData[BY].seats_in_bundestag = 93;
-    stData[BW].seats_in_bundestag = 77;
+    stData[BW].seats_in_bundestag = 76;//77;
     stData[SL].seats_in_bundestag = 7;
+*/
 
     double dElectThr;
     cout << "Bitte Sperrklausel eingeben (in Prozent; 0 wenn keine berücksichtigt werden soll): ";
