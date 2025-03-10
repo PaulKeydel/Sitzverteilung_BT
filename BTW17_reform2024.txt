@@ -1,0 +1,145 @@
+Bitte Sperrklausel eingeben (in Prozent; 0 wenn keine berücksichtigt werden soll): 5
+Bitte Anzahl der minimalen Sitze für Grundmandatsklausel eingeben (0 wenn keine Anwendung der GMK): 3
+Seats for CDU     : 178  (ÜM 0 , AM 0 )   (26.76% votes, 28.25% seats)
+Seats for SPD     : 136  (ÜM 0 , AM 0 )   (20.51% votes, 21.59% seats)
+Seats for LINKE   : 61   (ÜM 0 , AM 0 )   (9.24% votes, 9.68% seats)
+Seats for Gruene  : 59   (ÜM 0 , AM 0 )   (8.94% votes, 9.37% seats)
+Seats for CSU     : 41   (ÜM 0 , AM 0 )   (6.17% votes, 6.51% seats)
+Seats for FDP     : 71   (ÜM 0 , AM 0 )   (10.75% votes, 11.27% seats)
+Seats for AfD     : 84   (ÜM 0 , AM 0 )   (12.64% votes, 13.33% seats)
+-------------------------
+Total seats: 630
+-------------------------
+CDU - Seats per State
+-------------------------
+Schleswig-Holstein     : 8  (DM 10)   <-- 2 winner/s not represented in Bundestag
+Hamburg                : 4  (DM 1)
+Niedersachsen          : 23  (DM 16)
+Bremen                 : 1  (DM 0)
+Nordrhein-Westfalen    : 46  (DM 38)
+Hessen                 : 15  (DM 17)   <-- 2 winner/s not represented in Bundestag
+Rheinland-Pfalz        : 12  (DM 14)   <-- 2 winner/s not represented in Bundestag
+Baden-Wuerttemberg     : 30  (DM 38)   <-- 8 winner/s not represented in Bundestag
+Bayern                 : 0  (DM 0)
+Saarland               : 3  (DM 3)
+Berlin                 : 6  (DM 4)
+Brandenburg            : 6  (DM 9)   <-- 3 winner/s not represented in Bundestag
+Mecklenburg-Vorpommern : 4  (DM 6)   <-- 2 winner/s not represented in Bundestag
+Sachsen                : 10  (DM 12)   <-- 2 winner/s not represented in Bundestag
+Sachsen-Anhalt         : 5  (DM 9)   <-- 4 winner/s not represented in Bundestag
+Thueringen             : 5  (DM 8)   <-- 3 winner/s not represented in Bundestag
+-------------------------
+SPD - Seats per State
+-------------------------
+Schleswig-Holstein     : 6  (DM 1)
+Hamburg                : 3  (DM 5)   <-- 2 winner/s not represented in Bundestag
+Niedersachsen          : 18  (DM 14)
+Bremen                 : 1  (DM 2)   <-- 1 winner/s not represented in Bundestag
+Nordrhein-Westfalen    : 37  (DM 26)
+Hessen                 : 11  (DM 5)
+Rheinland-Pfalz        : 8  (DM 1)
+Baden-Wuerttemberg     : 14  (DM 0)
+Bayern                 : 16  (DM 0)
+Saarland               : 2  (DM 1)
+Berlin                 : 5  (DM 3)
+Brandenburg            : 4  (DM 1)
+Mecklenburg-Vorpommern : 2  (DM 0)
+Sachsen                : 4  (DM 0)
+Sachsen-Anhalt         : 3  (DM 0)
+Thueringen             : 2  (DM 0)
+-------------------------
+LINKE - Seats per State
+-------------------------
+Schleswig-Holstein     : 2  (DM 0)
+Hamburg                : 2  (DM 0)
+Niedersachsen          : 5  (DM 0)
+Bremen                 : 1  (DM 0)
+Nordrhein-Westfalen    : 10  (DM 0)
+Hessen                 : 4  (DM 0)
+Rheinland-Pfalz        : 2  (DM 0)
+Baden-Wuerttemberg     : 5  (DM 0)
+Bayern                 : 6  (DM 0)
+Saarland               : 1  (DM 0)
+Berlin                 : 5  (DM 4)
+Brandenburg            : 4  (DM 0)
+Mecklenburg-Vorpommern : 2  (DM 0)
+Sachsen                : 6  (DM 1)
+Sachsen-Anhalt         : 3  (DM 0)
+Thueringen             : 3  (DM 0)
+-------------------------
+Gruene - Seats per State
+-------------------------
+Schleswig-Holstein     : 3  (DM 0)
+Hamburg                : 2  (DM 0)
+Niedersachsen          : 6  (DM 0)
+Bremen                 : 1  (DM 0)
+Nordrhein-Westfalen    : 10  (DM 0)
+Hessen                 : 5  (DM 0)
+Rheinland-Pfalz        : 2  (DM 0)
+Baden-Wuerttemberg     : 11  (DM 0)
+Bayern                 : 10  (DM 0)
+Saarland               : 0  (DM 0)
+Berlin                 : 3  (DM 1)
+Brandenburg            : 1  (DM 0)
+Mecklenburg-Vorpommern : 1  (DM 0)
+Sachsen                : 2  (DM 0)
+Sachsen-Anhalt         : 1  (DM 0)
+Thueringen             : 1  (DM 0)
+-------------------------
+CSU - Seats per State
+-------------------------
+Schleswig-Holstein     : 0  (DM 0)
+Hamburg                : 0  (DM 0)
+Niedersachsen          : 0  (DM 0)
+Bremen                 : 0  (DM 0)
+Nordrhein-Westfalen    : 0  (DM 0)
+Hessen                 : 0  (DM 0)
+Rheinland-Pfalz        : 0  (DM 0)
+Baden-Wuerttemberg     : 0  (DM 0)
+Bayern                 : 41  (DM 46)   <-- 5 winner/s not represented in Bundestag
+Saarland               : 0  (DM 0)
+Berlin                 : 0  (DM 0)
+Brandenburg            : 0  (DM 0)
+Mecklenburg-Vorpommern : 0  (DM 0)
+Sachsen                : 0  (DM 0)
+Sachsen-Anhalt         : 0  (DM 0)
+Thueringen             : 0  (DM 0)
+-------------------------
+FDP - Seats per State
+-------------------------
+Schleswig-Holstein     : 3  (DM 0)
+Hamburg                : 2  (DM 0)
+Niedersachsen          : 6  (DM 0)
+Bremen                 : 0  (DM 0)
+Nordrhein-Westfalen    : 18  (DM 0)
+Hessen                 : 6  (DM 0)
+Rheinland-Pfalz        : 3  (DM 0)
+Baden-Wuerttemberg     : 11  (DM 0)
+Bayern                 : 11  (DM 0)
+Saarland               : 1  (DM 0)
+Berlin                 : 2  (DM 0)
+Brandenburg            : 2  (DM 0)
+Mecklenburg-Vorpommern : 1  (DM 0)
+Sachsen                : 3  (DM 0)
+Sachsen-Anhalt         : 1  (DM 0)
+Thueringen             : 1  (DM 0)
+-------------------------
+AfD - Seats per State
+-------------------------
+Schleswig-Holstein     : 2  (DM 0)
+Hamburg                : 1  (DM 0)
+Niedersachsen          : 6  (DM 0)
+Bremen                 : 0  (DM 0)
+Nordrhein-Westfalen    : 13  (DM 0)
+Hessen                 : 6  (DM 0)
+Rheinland-Pfalz        : 4  (DM 0)
+Baden-Wuerttemberg     : 11  (DM 0)
+Bayern                 : 13  (DM 0)
+Saarland               : 1  (DM 0)
+Berlin                 : 3  (DM 0)
+Brandenburg            : 4  (DM 0)
+Mecklenburg-Vorpommern : 2  (DM 0)
+Sachsen                : 10  (DM 3)
+Sachsen-Anhalt         : 4  (DM 0)
+Thueringen             : 4  (DM 0)
+-------------------------
