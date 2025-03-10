@@ -123,7 +123,8 @@ int collectDataFromFile(const string& path, array<StateData, NUM_STATES>& dataar
 int main(int argc, char *argv[])
 {
     const string filename = argc > 1 ? argv[1] : "kerg_mod.csv";
-    const int iReformMode = argc > 2 ? atoi(argv[2]) : 2;
+    const int reformMode = argc > 2 ? atoi(argv[2]) : 2020;
+    assert(reformMode == 2013 || reformMode == 2020 || reformMode == 2024);
   
     array<StateData, NUM_STATES> stData;
 
@@ -156,7 +157,7 @@ int main(int argc, char *argv[])
     int iMinNeededDM;
     cout << "Bitte Anzahl der minimalen Sitze für Grundmandatsklausel eingeben (0 wenn keine Anwendung der GMK): ";
     cin >> iMinNeededDM;
-    Bundestag bt(stData, startingPartiesN, iReformMode, dElectThr / 100.0, iMinNeededDM, vector<string>{"SSW"});
+    Bundestag bt(stData, startingPartiesN, reformMode, dElectThr / 100.0, iMinNeededDM, vector<string>{"SSW"});
 
     //print all parties in parliament
     bt.printSummary();

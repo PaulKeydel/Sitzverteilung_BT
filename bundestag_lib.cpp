@@ -67,9 +67,9 @@ void SainteLague::getSeatDist(int totalSeats, int* results, int ptr_offset)
 }
 
 
-Bundestag::Bundestag(array<StateData, NUM_STATES>& dataFromStates, int numPartiesAtStart, int i1reform2024_2reform2020_3before, double electoralThreshold, int minNeededDirectMandates, std::vector<std::string>&& listNatMinPar):
+Bundestag::Bundestag(array<StateData, NUM_STATES>& dataFromStates, int numPartiesAtStart, int reformYear, double electoralThreshold, int minNeededDirectMandates, std::vector<std::string>&& listNatMinPar):
     stateData(dataFromStates),
-    i1reform2024_2reform2020_3before(i1reform2024_2reform2020_3before),
+    iReformMode(reformYear),
     electoralThr(electoralThreshold),
     minNeededDM(minNeededDirectMandates),
     initialNumParties(numPartiesAtStart),
@@ -92,7 +92,7 @@ Bundestag::Bundestag(array<StateData, NUM_STATES>& dataFromStates, int numPartie
         }
     }
     //do the calculations depending on the chosen Wahlrechtsreform
-    if (i1reform2024_2reform2020_3before == 1)
+    if (iReformMode == 2024)
     {
         totalNumberSeats = 630;
         int votesPerState[NUM_STATES];
@@ -112,7 +112,6 @@ Bundestag::Bundestag(array<StateData, NUM_STATES>& dataFromStates, int numPartie
     }
     else
     {
-        bUseReform2020 = (i1reform2024_2reform2020_3before == 2);
         //calc party specific seat allocation in a state <s>
         for (int s = 0; s < NUM_STATES; s++)
         {
@@ -146,7 +145,7 @@ void Bundestag::evalSurplusMandates()
         for (int s = 0; s < NUM_STATES; s++)
         {
             int dm = Bundesland(s).direct_mandates[p];
-            if (bUseReform2020)
+            if (iReformMode == 2020)
             {
                 int diff = std::max(dm, (int)ceil(0.5 * (dm + initialSeatsInStates[s][p]))) - initialSeatsInStates[s][p];
                 Fraktion(p).surplusMandates += diff;
@@ -159,7 +158,7 @@ void Bundestag::evalSurplusMandates()
                 Bundesland(s).surplus_mandates[p] = diff;
             }
         }
-        if (bUseReform2020)
+        if (iReformMode == 2020)
         {
             if (Fraktion(p).surplusMandates < 0) Fraktion(p).surplusMandates = 0;
         }
@@ -183,7 +182,7 @@ int Bundestag::calcFinalParliamentSize()
     const double d = *std::min_element(divList.begin(), divList.end());
     int remaining_surplus[MAX_NUM_PARTIES] = {598};
     total_seats = 597;
-    if (bUseReform2020)
+    if (iReformMode == 2020)
     {
         while (accumulate(begin(remaining_surplus), end(remaining_surplus), 0, plus<int>()) > 3)
         {
@@ -213,7 +212,7 @@ int Bundestag::calcFinalParliamentSize()
 
     for (int p = 0; p < numParties; p++)
     {
-        if (bUseReform2020)
+        if (iReformMode == 2020)
         {
             Fraktion(p).finalSeats += remaining_surplus[p];
             total_seats += remaining_surplus[p];
@@ -315,7 +314,7 @@ void Bundestag::printPartySummary()
         {
             cout << std::setw(22) << stateMap.at(s) << " : " << Fraktion(party).finalSeatsPerState[s] << "  (DM " <<  Bundesland(s).direct_mandates[party] << ")";
             int iOverhang = Bundesland(s).direct_mandates[party] - Fraktion(party).finalSeatsPerState[s];
-            if (i1reform2024_2reform2020_3before != 1)
+            if (iReformMode != 2024)
             {
                 assert(iOverhang <= 0);
                 if (Bundesland(s).surplus_mandates[party] > 0) cout << "   <-- " << Bundesland(s).surplus_mandates[party] << " surplus mandate/s achieved";

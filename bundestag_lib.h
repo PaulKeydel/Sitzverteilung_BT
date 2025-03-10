@@ -82,8 +82,7 @@ private:
     SainteLague sl;
     std::array<StateData, NUM_STATES>& stateData;
     std::vector<ParlGroupData> parlGrData;
-    bool bUseReform2020;
-    int i1reform2024_2reform2020_3before;
+    int iReformMode;
     double electoralThr;
     int minNeededDM;
     int* initialSeatsInStates[NUM_STATES];

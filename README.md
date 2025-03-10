@@ -1,9 +1,9 @@
 # The German Bundestag and its composition
 
 This C++ program calculates the share of seats in the German Bundestag based on the election results from 2017, 2021 and 2025. Regardless of the election year, three different adaptations of the ballot system are available to compute the share of seats in parliament:
-* The "old" system before 2020 (mode 3): Every single _Überhangmandat_ will be balanced. This leads to a large number of MPs.
-* The 2020 electoral law reform (mode 2): Minor modifications of the compensation mechanism to achieve a smaller amount of _Ausgleichsmandaten_.
-* The 2024 electoral law reform (mode 1): No _Direktmandate_ (winning a constitueny does not automatically guarantee a seat in parliament). The parliament has a fixed size of 630 MPs.
+* The "old" system from 2013 (mode `2013`): Every single _Überhangmandat_ is balanced by additional seats (_Ausgleichsmandate_).This can prevent disproportionalities in terms of second votes but it also leads to a large number of MPs.
+* The 2020 electoral law reform (mode `2020`): Minor modifications in compensating surplus mandates. To achieve a smaller amount of _Ausgleichsmandaten_, the total number of surplus mandates is reduced by 3.
+* The 2024 electoral law reform (mode `2024`): No _Direktmandate_ (winning a constitueny does not automatically guarantee a seat in parliament). The parliament has a fixed size of 630 MPs.
 
 It's also possible to adjust cross-cutting parameters like the electoral threshold (usually 5%) and the _Grundmandatsklausel_ (the minimum number of won constituencies if the share of votes is less than 5%, usually 3).
 
